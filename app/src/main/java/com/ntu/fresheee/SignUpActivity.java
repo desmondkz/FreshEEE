@@ -135,9 +135,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
+                                        FirebaseUser fbuser = FirebaseAuth.getInstance().getCurrentUser();
                                         Toast.makeText(SignUpActivity.this,"You have been registered successfully", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
                                         startActivity(new Intent(SignUpActivity.this, HomeActivity.class));
+                                        fbuser.sendEmailVerification();
+                                        Toast.makeText(SignUpActivity.this, "Please check your email to verify your account!", Toast.LENGTH_LONG).show();
                                     }
                                     else {
                                         Toast.makeText(SignUpActivity.this, "Failed to register! Please try again", Toast.LENGTH_LONG).show();
