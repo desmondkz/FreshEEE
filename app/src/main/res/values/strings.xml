@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">FreshEEE</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="log_in">Log In</string>
+    <string name="password">Password</string>
+    <string name="not_registered_sign_up_here">Not registered? Sign up here</string>
+    <string name="logo">logo</string>
+    <string name="ntu_email">NTU Email</string>
+    <string name="password_min_6_char">Password (min 6 char)</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="already_have_an_account_sign_in_here">Already have an account? Sign in here</string>
+    <string name="ntu_log_in">NTU Log In</string>
+    <string name="biometric_login">Biometric Login</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="full_name">Full Name</string>
+</resources>
