@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity {
     ImageView logo;
@@ -54,8 +55,8 @@ public class SignUpActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String email = emailId.getText().toString().trim();
-                String fullname = fullName.getText().toString().trim();
+                final String email = emailId.getText().toString().trim();
+                final String fullname = fullName.getText().toString().trim();
                 String pwd = password.getText().toString().trim();
 
                 if(email.isEmpty()) {
@@ -88,22 +89,38 @@ public class SignUpActivity extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                else {
-                    mFirebaseAuth.createUserWithEmailAndPassword(email, pwd).addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                FirebaseUser mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                                mFirebaseUser.sendEmailVerification();
-                                Toast.makeText(SignUpActivity.this,"Check you NTU email to verify your account!", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(SignUpActivity.this,HomeActivity.class));
+                mFirebaseAuth.createUserWithEmailAndPassword(email, pwd)
+                        .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    User user = new User(fullname, email);
+                                    FirebaseDatabase.getInstance().getReference("Users")
+                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()) {
+                                                Toast.makeText(SignUpActivity.this,"You have been registered successfully!", Toast.LENGTH_LONG).show();
+                                                progressBar.setVisibility(View.VISIBLE);
+                                            }
+                                            else {
+                                                Toast.makeText(SignUpActivity.this, "Failed to register, Try again!", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+
+                                    FirebaseUser mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                                    mFirebaseUser.sendEmailVerification();
+                                    Toast.makeText(SignUpActivity.this,"Check you NTU email to verify your account!", Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(SignUpActivity.this,HomeActivity.class));
+                                }
+                                else {
+                                    Toast.makeText(SignUpActivity.this, "Email already registered, Plase Login or try another email", Toast.LENGTH_LONG).show();
+                                }
                             }
-                            else {
-                                Toast.makeText(SignUpActivity.this, "Email already registered, Plase Login or try another email", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
+                        });
+
             }
         });
 
