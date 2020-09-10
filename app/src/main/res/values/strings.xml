@@ -13,8 +13,7 @@
     <!-- Sync Preferences -->
     <string name="sync_title">Sync email periodically</string>
     <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="log_in">Log In</string>
     <string name="password">Password</string>
@@ -23,7 +22,7 @@
     <string name="ntu_email">NTU Email</string>
     <string name="password_min_6_char">Password (min 6 char)</string>
     <string name="sign_up">Sign Up</string>
-    <string name="already_have_an_account_sign_in_here">Already have an account? Sign in here</string>
+    <string name="already_have_an_account_log_in_here">Already have an account? Log in here</string>
     <string name="ntu_log_in">NTU Log In</string>
     <string name="biometric_login">Biometric Login</string>
     <string name="forgot_password">Forgot Password?</string>

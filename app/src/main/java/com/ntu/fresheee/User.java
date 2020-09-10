@@ -2,15 +2,15 @@ package com.ntu.fresheee;
 
 public class User {
 
-    public String email, fullname;
+    public String fullName, email;
 
     public User(){
 
     }
 
-    public User(String fullname, String email) {
+    public User(String fullName, String email) {
 //      this is class to store user information
-        this.fullname = fullname;
+        this.fullName = fullName;
         this.email = email;
     }
 }

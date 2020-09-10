@@ -20,101 +20,43 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginActivity extends AppCompatActivity {
-    ImageView logo;
-    EditText emailId, password;
-    Button btnSignIn;
-    TextView tvSignUp;
-    ProgressBar progressBar;
-    FirebaseAuth mFirebaseAuth;
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private Button btnLogIn;
+    private ImageView logo;
+    private EditText editTextEmail, editTextPassword;
+    private TextView tvSignUp;
+
+
+    private FirebaseAuth mAuth;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        logo = findViewById(R.id.logo);
-        emailId = findViewById(R.id.editTextTextEmailAddress);
-        password = findViewById(R.id.editTextTextPassword);
-        btnSignIn = findViewById(R.id.buttonSignIn);
-        tvSignUp = findViewById(R.id.textView);
 
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                if(mFirebaseUser != null) {
-                    Toast.makeText(LoginActivity.this, "You are logged in!", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(LoginActivity.this, HomeActivity.class);
-                    startActivity(i);
-                }
-                else {
-                    Toast.makeText(LoginActivity.this, "Please Log In", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
+        logo = (ImageView) findViewById(R.id.logo);
+        logo.setOnClickListener(this);
+
+        tvSignUp = (TextView) findViewById(R.id.to_signup);
+        tvSignUp.setOnClickListener(this);
+
+        btnLogIn = (Button) findViewById(R.id.buttonLogIn);
+        btnLogIn.setOnClickListener(this);
+
+        editTextEmail = (EditText) findViewById(R.id.email);
+        editTextPassword = (EditText) findViewById(R.id.password);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        mAuth = FirebaseAuth.getInstance();
 
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, WelcomeActivity.class);
-                startActivity(i);
-            }
-        });
-
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String email = emailId.getText().toString().trim();
-                String pwd = password.getText().toString().trim();
-                //validation
-                if(email.isEmpty()) {
-                    emailId.setError("Please Enter Your NTU email");
-                    emailId.requestFocus();
-                    return;
-                }
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    emailId.setError("Please provide valid email account");
-                    emailId.requestFocus();
-                    return;
-                }
-                if(pwd.isEmpty()) {
-                    password.setError("Please Enter Your password");
-                    password.requestFocus();
-                    return;
-                }
-                if(pwd.length() < 6) {
-                    password.setError("Min password length should be 6 characters");
-                    password.requestFocus();
-                    return;
-                }
-                progressBar.setVisibility(View.VISIBLE);
-
-                mFirebaseAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.isSuccessful()) {
-                                FirebaseUser mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                                // if email is verified, redirect user to home page
-                                if(mFirebaseUser.isEmailVerified()) {
-                                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                                }
-                                // if email not verified, send email confirmation and show toast
-                                else {
-                                    mFirebaseUser.sendEmailVerification();
-                                    Toast.makeText(LoginActivity.this,"Check you NTU email to verify your account!", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                            else {
-                                Toast.makeText(LoginActivity.this, "Failed to login! Please check your credentials", Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-
+                Intent intWelcome = new Intent(LoginActivity.this, WelcomeActivity.class);
+                startActivity(intWelcome);
             }
         });
 
@@ -128,8 +70,56 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.to_signup:
+                startActivity(new Intent(this, SignUpActivity.class));
+                break;
+            case R.id.buttonLogIn:
+                userLogin();
+                break;
+        }
+    }
+
+    private void userLogin() {
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+
+        if(email.isEmpty()) {
+            editTextEmail.setError("Email is required!");
+            editTextEmail.requestFocus();
+            return;
+        }
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            editTextEmail.setError("Please provide valid email account");
+            editTextEmail.requestFocus();
+            return;
+        }
+        if(password.isEmpty()) {
+            editTextPassword.setError("Password is required");
+            editTextPassword.requestFocus();
+            return;
+        }
+        if(password.length() < 6) {
+            editTextPassword.setError("Min password length should be 6 characters");
+            editTextPassword.requestFocus();
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()) {
+                    startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                }
+                else {
+                    Toast.makeText(LoginActivity.this, "Failed to login! Please check your credentials", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+
     }
 }

@@ -21,28 +21,41 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class SignUpActivity extends AppCompatActivity {
-    ImageView logo;
-    EditText emailId, password, fullName;
-    Button btnSignUp;
-    TextView tvSignIn;
-    ProgressBar progressBar;
-    FirebaseAuth mFirebaseAuth;
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private Button btnSignUp;
+    private ImageView logo;
+    private EditText editTextEmail,editTextFullName, editTextPassword;
+    private TextView tvLogIn;
+    private ProgressBar progressBar;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        logo = findViewById(R.id.logo);
-        emailId = findViewById(R.id.editTextTextEmailAddress);
-        fullName = findViewById(R.id.editTextTextPersonFullName);
-        password = findViewById(R.id.editTextTextPassword);
-        btnSignUp = findViewById(R.id.buttonSignUp);
-        tvSignIn = findViewById(R.id.textView);
-        progressBar = findViewById(R.id.progressBar);
+        mAuth = FirebaseAuth.getInstance();
+
+        logo = (ImageView) findViewById(R.id.logo);
+        logo.setOnClickListener(this);
+
+        btnSignUp = (Button) findViewById(R.id.buttonSignUp);
+        btnSignUp.setOnClickListener(this);
+
+        tvLogIn = (TextView) findViewById(R.id.to_login);
+        tvLogIn.setOnClickListener(this);
+
+        editTextEmail = (EditText) findViewById(R.id.email);
+        editTextFullName = (EditText) findViewById(R.id.fullName);
+        editTextPassword = (EditText) findViewById(R.id.password);
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+
+
+//        mFirebaseAuth = FirebaseAuth.getInstance();
 
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,86 +65,92 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String email = emailId.getText().toString().trim();
-                final String fullname = fullName.getText().toString().trim();
-                String pwd = password.getText().toString().trim();
-
-                if(email.isEmpty()) {
-                    emailId.setError("Please Enter Your NTU email");
-                    emailId.requestFocus();
-                    return;
-                }
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    emailId.setError("Please provide valid email account");
-                    emailId.requestFocus();
-                    return;
-                }
-
-                if(fullname.isEmpty()) {
-                    fullName.setError("Full Name is required");
-                    fullName.requestFocus();
-                    return;
-                }
-
-                if(pwd.isEmpty()) {
-                    password.setError("Password is required");
-                    password.requestFocus();
-                    return;
-                }
-                if(pwd.length() < 6) {
-                    password.setError("Min password length should be 6 characters");
-                    password.requestFocus();
-                    return;
-                }
-
-                progressBar.setVisibility(View.VISIBLE);
-
-                mFirebaseAuth.createUserWithEmailAndPassword(email, pwd)
-                        .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    User user = new User(fullname, email);
-                                    FirebaseDatabase.getInstance().getReference("Users")
-                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()) {
-                                                Toast.makeText(SignUpActivity.this,"You have been registered successfully!", Toast.LENGTH_LONG).show();
-                                                progressBar.setVisibility(View.GONE);
-                                            }
-                                            else {
-                                                Toast.makeText(SignUpActivity.this, "Failed to register, Try again!", Toast.LENGTH_LONG).show();
-                                                progressBar.setVisibility(View.GONE);
-                                            }
-                                        }
-                                    });
-
-                                    FirebaseUser mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                                    mFirebaseUser.sendEmailVerification();
-                                    Toast.makeText(SignUpActivity.this,"Check you NTU email to verify your account!", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(SignUpActivity.this,HomeActivity.class));
-                                }
-                                else {
-                                    Toast.makeText(SignUpActivity.this, "Email already registered, Please Login or try another email", Toast.LENGTH_LONG).show();
-                                    progressBar.setVisibility(View.GONE);
-                                }
-                            }
-                        });
-
-            }
-        });
-
-        tvSignIn.setOnClickListener(new View.OnClickListener() {
+        tvLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
                 startActivity(i);
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.logo:
+                startActivity(new Intent(this, WelcomeActivity.class));
+                break;
+            case R.id.buttonSignUp:
+                signupUser();
+                break;
+
+        }
+    }
+
+    private void signupUser() {
+        final String email = editTextEmail.getText().toString().trim();
+        final String fullName = editTextFullName.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+
+        if(email.isEmpty()) {
+            editTextEmail.setError("Please Enter Your NTU email");
+            editTextEmail.requestFocus();
+            return;
+        }
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            editTextEmail.setError("Please provide valid email account");
+            editTextEmail.requestFocus();
+            return;
+        }
+
+        if(fullName.isEmpty()) {
+            editTextFullName.setError("Full Name is required");
+            editTextFullName.requestFocus();
+            return;
+        }
+
+        if(password.isEmpty()) {
+            editTextPassword.setError("Password is required");
+            editTextPassword.requestFocus();
+            return;
+        }
+        if(password.length() < 6) {
+            editTextPassword.setError("Min password length should be 6 characters");
+            editTextPassword.requestFocus();
+            return;
+        }
+
+        progressBar.setVisibility(View.VISIBLE);
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            User user = new User(fullName, email);
+
+                            FirebaseDatabase.getInstance().getReference("Users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        Toast.makeText(SignUpActivity.this,"You have been registered successfully", Toast.LENGTH_LONG).show();
+                                        progressBar.setVisibility(View.GONE);
+                                        startActivity(new Intent(SignUpActivity.this, HomeActivity.class));
+                                    }
+                                    else {
+                                        Toast.makeText(SignUpActivity.this, "Failed to register! Please try again", Toast.LENGTH_LONG).show();
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            Toast.makeText(SignUpActivity.this, "Failed to register! Please try again", Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }
+                });
     }
 }
