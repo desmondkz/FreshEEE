@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,38 +68,52 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String email = emailId.getText().toString();
-                String pwd = password.getText().toString();
+                String email = emailId.getText().toString().trim();
+                String pwd = password.getText().toString().trim();
+                //validation
                 if(email.isEmpty()) {
                     emailId.setError("Please Enter Your NTU email");
                     emailId.requestFocus();
+                    return;
                 }
-                else if (pwd.isEmpty()) {
+                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    emailId.setError("Please provide valid email account");
+                    emailId.requestFocus();
+                    return;
+                }
+                if(pwd.isEmpty()) {
                     password.setError("Please Enter Your password");
                     password.requestFocus();
+                    return;
                 }
-                else {
-                    mFirebaseAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                if(pwd.length() < 6) {
+                    password.setError("Min password length should be 6 characters");
+                    password.requestFocus();
+                    return;
+                }
+                progressBar.setVisibility(View.VISIBLE);
+
+                mFirebaseAuth.signInWithEmailAndPassword(email, pwd).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-
                             if(task.isSuccessful()) {
                                 FirebaseUser mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
+                                // if email is verified, redirect user to home page
                                 if(mFirebaseUser.isEmailVerified()) {
                                     startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                 }
+                                // if email not verified, send email confirmation and show toast
                                 else {
                                     mFirebaseUser.sendEmailVerification();
                                     Toast.makeText(LoginActivity.this,"Check you NTU email to verify your account!", Toast.LENGTH_LONG).show();
                                 }
                             }
                             else {
-                                Toast.makeText(LoginActivity.this, "Login Error, Please Login again", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Failed to login! Please check your credentials", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
-                }
 
             }
         });

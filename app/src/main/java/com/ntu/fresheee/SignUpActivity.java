@@ -102,10 +102,11 @@ public class SignUpActivity extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()) {
                                                 Toast.makeText(SignUpActivity.this,"You have been registered successfully!", Toast.LENGTH_LONG).show();
-                                                progressBar.setVisibility(View.VISIBLE);
+                                                progressBar.setVisibility(View.GONE);
                                             }
                                             else {
                                                 Toast.makeText(SignUpActivity.this, "Failed to register, Try again!", Toast.LENGTH_LONG).show();
+                                                progressBar.setVisibility(View.GONE);
                                             }
                                         }
                                     });
@@ -116,7 +117,8 @@ public class SignUpActivity extends AppCompatActivity {
                                     startActivity(new Intent(SignUpActivity.this,HomeActivity.class));
                                 }
                                 else {
-                                    Toast.makeText(SignUpActivity.this, "Email already registered, Plase Login or try another email", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SignUpActivity.this, "Email already registered, Please Login or try another email", Toast.LENGTH_LONG).show();
+                                    progressBar.setVisibility(View.GONE);
                                 }
                             }
                         });
