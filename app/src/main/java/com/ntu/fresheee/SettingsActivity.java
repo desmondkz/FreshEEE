@@ -11,27 +11,32 @@ import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 
-public class HomeActivity extends AppCompatActivity {
-    FirebaseAuth mFirebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private FirebaseUser mFirebaseUser;
-    private DatabaseReference reference;
+public class SettingsActivity extends AppCompatActivity {
 
-    private String userID;
+    Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_settings);
+
+        btnLogout = findViewById(R.id.logout);
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance() .signOut();
+                Intent intToSignUp = new Intent(SettingsActivity.this, LoginActivity.class);
+                startActivity(intToSignUp);
+            }
+        });
 
         //Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         //Set Discovery Selected
-        bottomNavigationView.setSelectedItemId(R.id.home);
+        bottomNavigationView.setSelectedItemId(R.id.settings);
 
         //Perform ItemSelectedListener
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -39,14 +44,14 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.home:
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        overridePendingTransition(0,0);
                         return true;
                     case R.id.discovery:
                         startActivity(new Intent(getApplicationContext(), DiscoveryActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.settings:
-                        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-                        overridePendingTransition(0,0);
                         return true;
                 }
                 return false;
