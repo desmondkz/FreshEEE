@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btnLogIn;
     private ImageView logo;
     private EditText editTextEmail, editTextPassword;
-    private TextView tvSignUp;
+    private TextView tvSignUp, forgotPassword;
 
 
     private FirebaseAuth mAuth;
@@ -41,6 +41,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         tvSignUp = (TextView) findViewById(R.id.to_signup);
         tvSignUp.setOnClickListener(this);
+
+        forgotPassword = (TextView) findViewById(R.id.forgotPassword);
+        forgotPassword.setOnClickListener(this);
 
         btnLogIn = (Button) findViewById(R.id.buttonLogIn);
         btnLogIn.setOnClickListener(this);
@@ -77,6 +80,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.buttonLogIn:
                 userLogin();
+                break;
+            case R.id.forgotPassword:
+                startActivity(new Intent(this, ForgotPasswordActivity.class));
                 break;
         }
     }
