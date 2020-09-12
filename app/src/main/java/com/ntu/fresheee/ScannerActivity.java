@@ -4,7 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.budiyev.android.codescanner.CodeScanner;
@@ -31,17 +36,22 @@ public class ScannerActivity extends AppCompatActivity {
         scannerView = findViewById(R.id.scanner_view);
         codeScanner = new CodeScanner(this,scannerView);
 
+
+
         codeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
             public void onDecoded(@NonNull final Result result) {
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Toast.makeText(ScannerActivity.this, result.getText(), Toast.LENGTH_LONG).show();
+                        String url = result.getText().toString().trim();
+                        Intent i = new Intent(ScannerActivity.this, WebViewActivity.class);
+                        i.putExtra("URL", url);
+                        startActivity(i);
+
                     }
                 });
-
             }
         });
     }
