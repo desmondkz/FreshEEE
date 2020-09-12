@@ -26,5 +26,13 @@
         app:menu="@menu/menu_navigation"
         android:layout_alignParentBottom="true"/>
 
+    <ImageView
+        android:id="@+id/buttonScanner"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="50dp"
+        app:srcCompat="@drawable/ic_scanner" />
+
 
 </RelativeLayout>
