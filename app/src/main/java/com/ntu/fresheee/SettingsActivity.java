@@ -20,8 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 public class SettingsActivity extends AppCompatActivity {
 
     private FirebaseUser fbuser;
@@ -40,7 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance() .signOut();
+                FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
             }
         });
