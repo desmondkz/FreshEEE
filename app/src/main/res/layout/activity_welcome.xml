@@ -22,6 +22,17 @@
         app:layout_constraintVertical_bias="0.199"
         app:srcCompat="@mipmap/ic_launcher_round" />
 
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintVertical_bias="0.087" />
+
     <Button
         android:id="@+id/to_login"
         android:layout_width="200dp"
@@ -37,7 +48,7 @@
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.127" />
 
     <Button
         android:id="@+id/biometric_login"

@@ -47,26 +47,28 @@ public class WelcomeActivity extends AppCompatActivity {
         bioLogin = (Button) findViewById(R.id.biometric_login);
         msg_txt = (TextView) findViewById(R.id.txt_msg);
 
+        bioLogin.setVisibility(View.INVISIBLE);
+
         //Create BiometricManager and let's check is the user can use fingerprint sensor or not
-        final BiometricManager biometricManager = BiometricManager.from(this);
-        switch (biometricManager.canAuthenticate()) {
-            case BiometricManager.BIOMETRIC_SUCCESS:
-                msg_txt.setText("You can use the fingerprint sensor to login");
-                msg_txt.setTextColor(Color.parseColor("#000000"));
-                break;
-            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                msg_txt.setText("The device does not have a fingerprint sensor");
-                bioLogin.setVisibility(View.GONE);
-                break;
-            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                msg_txt.setText("The biometric sensor is not available");
-                bioLogin.setVisibility(View.GONE);
-                break;
-            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                msg_txt.setText("Your device does not have any fingerprint saved");
-                bioLogin.setVisibility(View.GONE);
-                break;
-        }
+//        final BiometricManager biometricManager = BiometricManager.from(this);
+//        switch (biometricManager.canAuthenticate()) {
+//            case BiometricManager.BIOMETRIC_SUCCESS:
+//                msg_txt.setText("You can use the fingerprint sensor to login");
+//                msg_txt.setTextColor(Color.parseColor("#000000"));
+//                break;
+//            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+//                msg_txt.setText("The device does not have a fingerprint sensor");
+//                bioLogin.setVisibility(View.GONE);
+//                break;
+//            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+//                msg_txt.setText("The biometric sensor is not available");
+//                bioLogin.setVisibility(View.GONE);
+//                break;
+//            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+//                msg_txt.setText("Your device does not have any fingerprint saved");
+//                bioLogin.setVisibility(View.GONE);
+//                break;
+//        }
 
         Executor executor = ContextCompat.getMainExecutor(this);
         final BiometricPrompt biometricPrompt = new BiometricPrompt(WelcomeActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {

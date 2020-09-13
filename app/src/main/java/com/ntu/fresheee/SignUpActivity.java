@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -35,6 +36,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        // Setup SharedPreferences file to store user information locally
+        SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -126,9 +130,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if(task.isSuccessful()){
                             User user = new User(fullName, email);
-
                             FirebaseDatabase.getInstance().getReference("Users")
                                     .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                     .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -136,6 +140,13 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
                                         FirebaseUser fbuser = FirebaseAuth.getInstance().getCurrentUser();
+
+                                        // Store user input user fullname into SharedPreferences
+                                        SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = preferences.edit();
+                                        editor.putString("userName", fullName);
+                                        editor.apply();
+
                                         Toast.makeText(SignUpActivity.this,"You have been registered successfully", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);
                                         startActivity(new Intent(SignUpActivity.this, HomeActivity.class));

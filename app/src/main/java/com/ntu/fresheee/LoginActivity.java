@@ -43,7 +43,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         logo = (ImageView) findViewById(R.id.logo);
         logo.setOnClickListener(this);
-
         tvSignUp = (TextView) findViewById(R.id.to_signup);
         tvSignUp.setOnClickListener(this);
 
@@ -71,22 +70,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         else if(checkbox.equals("false")) {
             Toast.makeText(this, "Please Sign In", Toast.LENGTH_LONG).show();
         }
-;
-        logo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intWelcome = new Intent(LoginActivity.this, WelcomeActivity.class);
-                startActivity(intWelcome);
-            }
-        });
-
-        tvSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intSignUp =  new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(intSignUp);
-            }
-        });
 
         remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -105,6 +88,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     editor.apply();
                     Toast.makeText(LoginActivity.this, "Unchecked", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+
+        logo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
+            }
+        });
+
+        tvSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
             }
         });
     }
