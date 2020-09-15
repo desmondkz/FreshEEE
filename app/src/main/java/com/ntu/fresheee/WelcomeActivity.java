@@ -8,10 +8,9 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -32,9 +31,18 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        sessionManager = new SessionManager(getApplicationContext());
 
         // Initiate Login button
         toLogin = findViewById(R.id.to_login);
+
+        if(sessionManager.getLogin()) {
+            toLogin.setVisibility(View.INVISIBLE);
+
+            SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
+            final TextView welcomeBackTextView = (TextView) findViewById(R.id.user_name);
+            welcomeBackTextView.setText(preferences.getString("userName", null));
+        }
 
         // when click on login button, go to login page
         toLogin.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +64,28 @@ public class WelcomeActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(getApplicationContext());
 
-        bioLogin.setVisibility(View.VISIBLE);
+        //Create BiometricManager and let's check is the user can use fingerprint sensor or not
+        final BiometricManager biometricManager = BiometricManager.from(this);
+        switch (biometricManager.canAuthenticate()) {
+            case BiometricManager.BIOMETRIC_SUCCESS:
+                break;
+            //If phone does not have biometric sensor
+            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                toLogin.setVisibility(View.VISIBLE);
+                bioLogin.setVisibility(View.GONE);
+                break;
+            //If phone's biometric sensor faulty
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                toLogin.setVisibility(View.VISIBLE);
+                bioLogin.setVisibility(View.GONE);
+                break;
+            //If phone does not have any biometric data stored
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                toLogin.setVisibility(View.VISIBLE);
+                bioLogin.setVisibility(View.GONE);
+                break;
+        }
+
 
         Executor executor = ContextCompat.getMainExecutor(this);
         final BiometricPrompt biometricPrompt = new BiometricPrompt(WelcomeActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
