@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,10 +26,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private String userID;
     private ImageView scanner;
 
+    SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+
+        //Initialize SharedPreferences and get stored username from local files and display it
+        SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
+        final TextView welcomeUsernameTextView = (TextView) findViewById(R.id.welcome_username);
+        welcomeUsernameTextView.setText(preferences.getString("userName", null));
 
         scanner = (ImageView) findViewById(R.id.buttonScanner);
         scanner.setOnClickListener(this);
@@ -57,6 +67,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         });
+
+
     }
 
     @Override

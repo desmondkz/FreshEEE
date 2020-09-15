@@ -32,6 +32,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private FirebaseAuth mAuth;
 
+    SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,23 +59,21 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-
+        sessionManager = new SessionManager(getApplicationContext());
 
 //        mFirebaseAuth = FirebaseAuth.getInstance();
 
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SignUpActivity.this, WelcomeActivity.class);
-                startActivity(i);
+                startActivity(new Intent(SignUpActivity.this, WelcomeActivity.class));
             }
         });
 
         tvLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
-                startActivity(i);
+                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
             }
         });
     }
@@ -106,13 +106,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             editTextEmail.requestFocus();
             return;
         }
-
         if(fullName.isEmpty()) {
             editTextFullName.setError("Full Name is required");
             editTextFullName.requestFocus();
             return;
         }
-
         if(password.isEmpty()) {
             editTextPassword.setError("Password is required");
             editTextPassword.requestFocus();
@@ -130,7 +128,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
                         if(task.isSuccessful()){
                             User user = new User(fullName, email);
                             FirebaseDatabase.getInstance().getReference("Users")
@@ -141,11 +138,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                     if(task.isSuccessful()){
                                         FirebaseUser fbuser = FirebaseAuth.getInstance().getCurrentUser();
 
-                                        // Store user input user fullname into SharedPreferences
+                                        // Store user input user fullname and email into SharedPreferences
                                         SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
                                         SharedPreferences.Editor editor = preferences.edit();
                                         editor.putString("userName", fullName);
+                                        editor.putString("email", email);
                                         editor.apply();
+
+                                        sessionManager.setLogin(true);
+
 
                                         Toast.makeText(SignUpActivity.this,"You have been registered successfully", Toast.LENGTH_LONG).show();
                                         progressBar.setVisibility(View.GONE);

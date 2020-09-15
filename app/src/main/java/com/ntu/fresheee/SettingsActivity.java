@@ -1,8 +1,10 @@
 package com.ntu.fresheee;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -29,6 +31,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     private Button btnLogout;
 
+    SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,24 +43,41 @@ public class SettingsActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("remember", "false");
-                editor.apply();
-
-                finish();
-
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(SettingsActivity.this, WelcomeActivity.class));
+                //Initialize alert dialog builder
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                builder.setTitle("Log out");
+                builder.setMessage("Are you sure to log out?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Set login false
+                        sessionManager.setLogin(false);
+                        FirebaseAuth.getInstance().signOut();
+                        startActivity(new Intent(SettingsActivity.this, WelcomeActivity.class));
+                        finish();
+                    }
+                });
+                //Set negative button
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                //Initialize alert dialog
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
             }
         });
+
+        sessionManager = new SessionManager(getApplicationContext());
+
+
 
         fbuser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
         userID = fbuser.getUid();
 
-        final TextView greetingTextView = (TextView) findViewById(R.id.greeting);
         final TextView fullNameTextView = (TextView) findViewById(R.id.fullName);
         final TextView emailTextView = (TextView) findViewById(R.id.emailAddress);
 
@@ -69,7 +90,6 @@ public class SettingsActivity extends AppCompatActivity {
                     String fullName = userProfile.fullName;
                     String email = userProfile.email;
 
-                    greetingTextView.setText("Welcome, " + fullName + "!");
                     fullNameTextView.setText(fullName);
                     emailTextView.setText(email);
                 }

@@ -30,16 +30,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ImageView logo;
     private EditText editTextEmail, editTextPassword;
     private TextView tvSignUp, forgotPassword;
-    private CheckBox remember;
-
 
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
+
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Setup SharedPreferences file to store user information locally
+        SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
+
 
         logo = (ImageView) findViewById(R.id.logo);
         logo.setOnClickListener(this);
@@ -55,42 +59,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editTextEmail = (EditText) findViewById(R.id.email);
         editTextPassword = (EditText) findViewById(R.id.password);
 
-        remember = (CheckBox) findViewById(R.id.remember_me);
-
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         mAuth = FirebaseAuth.getInstance();
 
-        SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-        String checkbox = preferences.getString("remember", "");
-        assert checkbox != null;
-        if(checkbox.equals("true")) {
-            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-        }
-        else if(checkbox.equals("false")) {
-            Toast.makeText(this, "Please Sign In", Toast.LENGTH_LONG).show();
-        }
-
-        remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(compoundButton.isChecked()) {
-                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("remember", "true");
-                    editor.apply();
-                    Toast.makeText(LoginActivity.this, "Checked", Toast.LENGTH_LONG).show();
-                }
-                else if(!compoundButton.isChecked()) {
-                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("remember", "false");
-                    editor.apply();
-                    Toast.makeText(LoginActivity.this, "Unchecked", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
+        //Initialize SessionManager
+        sessionManager = new SessionManager(getApplicationContext());
 
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,8 +97,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void userLogin() {
-        String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
+        final String email = editTextEmail.getText().toString().trim();
+        final String password = editTextPassword.getText().toString().trim();
 
         if(email.isEmpty()) {
             editTextEmail.setError("Email is required!");
@@ -155,11 +129,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if(task.isSuccessful()) {
                     FirebaseUser fbuser = FirebaseAuth.getInstance().getCurrentUser();
                     if(fbuser.isEmailVerified()) {
+
+                        // Store user input user fullname and email into SharedPreferences
+                        SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("email", email);
+                        editor.apply();
+                        //Store login in session
+                        sessionManager.setLogin(true);
+                        //Redirect activity
                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                     }
                     else {
                         fbuser.sendEmailVerification();
-                        Toast.makeText(LoginActivity.this, "Please check your email to verify your account!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, "Please check your email to verify your account and login!", Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.GONE);
                     }
                 }
@@ -169,6 +152,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+
+        //If user already logged in
+        if(sessionManager.getLogin()) {
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+        }
 
     }
 }
