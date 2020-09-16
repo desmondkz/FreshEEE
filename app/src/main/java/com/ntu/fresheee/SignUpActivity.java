@@ -95,6 +95,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         final String email = editTextEmail.getText().toString().trim();
         final String fullName = editTextFullName.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
+        String emailPattern = "[a-zA-Z0-9]+@e.ntu.edu.sg";
 
         if(email.isEmpty()) {
             editTextEmail.setError("Please Enter Your NTU email");
@@ -103,6 +104,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editTextEmail.setError("Please provide valid email account");
+            editTextEmail.requestFocus();
+            return;
+        }
+        if(!email.matches(emailPattern)) {
+            editTextEmail.setError("Please provide valid NTU email account");
             editTextEmail.requestFocus();
             return;
         }

@@ -18,7 +18,7 @@
         android:layout_marginEnd="40dp"
         android:ems="10"
         android:hint="@string/ntu_email"
-        android:importantForAutofill="no"
+        android:importantForAutofill="auto"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email"
         app:layout_constraintVertical_bias="0.004"
-        android:importantForAutofill="no" />
+        android:importantForAutofill="auto" />
 
     <Button
         android:id="@+id/buttonLogIn"
@@ -120,5 +120,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
