@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">FreshEEE</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="google_map_API_key">AIzaSyC2MF4xFtTsFLbNC9L9kKf28JxGaIOEGEI</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
