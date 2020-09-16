@@ -10,10 +10,10 @@
 
     <ImageView
         android:id="@+id/buttonScanner"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="50dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="25dp"
         app:srcCompat="@drawable/ic_scanner" />
 
     <TextView
@@ -21,9 +21,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Welcome!"
-        android:layout_marginTop="90dp"
-        android:layout_marginStart="50dp"
-        android:textSize="20sp"
+        android:layout_marginTop="60dp"
+        android:layout_marginStart="25dp"
+        android:textSize="17sp"
         android:textStyle="bold"
         />
 
@@ -31,12 +31,10 @@
         android:id="@+id/welcome_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="17sp"
         android:textStyle="normal"
-        android:layout_marginTop="90dp"
-        android:layout_marginStart="145dp" />
-
-
+        android:layout_marginTop="60dp"
+        android:layout_marginStart="105dp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -48,7 +46,19 @@
         app:menu="@menu/menu_navigation"
         android:layout_alignParentBottom="true"/>
 
+    <ImageView
+        android:id="@+id/home_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/fresheee_icon_foreground"
+        android:layout_marginStart="280dp"
+        android:layout_marginTop="5dp"/>
 
-
+    <Button
+        android:id="@+id/safeEntry_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Map"
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>
