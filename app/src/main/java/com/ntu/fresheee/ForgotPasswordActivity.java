@@ -82,12 +82,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
-                    Toast.makeText(ForgotPasswordActivity.this,"Please check your email to reset you password", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ForgotPasswordActivity.this,"Please check your email to reset you password", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                     startActivity(new Intent(ForgotPasswordActivity.this, LoginActivity.class));
                 }
                 else {
-                    Toast.makeText(ForgotPasswordActivity.this,"Please try again!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ForgotPasswordActivity.this,"Please try again!", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
                 }
             }

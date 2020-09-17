@@ -154,21 +154,21 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                         sessionManager.setLogin(true);
 
 
-                                        Toast.makeText(SignUpActivity.this,"You have been registered successfully", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(SignUpActivity.this,"You have been registered successfully", Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                         startActivity(new Intent(SignUpActivity.this, HomeActivity.class));
                                         fbuser.sendEmailVerification();
-                                        Toast.makeText(SignUpActivity.this, "Please check your email to verify your account!", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(SignUpActivity.this, "Please check your email to verify your account!", Toast.LENGTH_SHORT).show();
                                     }
                                     else {
-                                        Toast.makeText(SignUpActivity.this, "Failed to register! Please try again", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(SignUpActivity.this, "Failed to register! Please try again", Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                     }
                                 }
                             });
                         }
                         else {
-                            Toast.makeText(SignUpActivity.this, "Failed to register! Please try again", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignUpActivity.this, "Failed to register! Please try again", Toast.LENGTH_SHORT).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     }

@@ -71,7 +71,7 @@ public class ScannerActivity extends AppCompatActivity {
 
             @Override
             public void onPermissionDenied(PermissionDeniedResponse response) {
-                Toast.makeText(ScannerActivity.this, "Camera Permission is Required.", Toast.LENGTH_LONG).show();
+                Toast.makeText(ScannerActivity.this, "Camera Permission is Required.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
