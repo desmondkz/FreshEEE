@@ -25,6 +25,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private String userID;
     private ImageView scanner;
+    private Button btnMap;
 
     SessionManager sessionManager;
 
@@ -41,6 +42,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         scanner = (ImageView) findViewById(R.id.buttonScanner);
         scanner.setOnClickListener(this);
+
+        btnMap = (Button) findViewById(R.id.safeEntry_map);
+        btnMap.setOnClickListener(this);
 
         //Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -77,6 +81,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonScanner:
                 startActivity(new Intent(this, ScannerActivity.class));
                 break;
+            case R.id.safeEntry_map:
+                startActivity(new Intent(this, MapsActivity.class));
         }
     }
 }
