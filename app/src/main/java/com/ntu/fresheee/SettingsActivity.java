@@ -35,6 +35,9 @@ public class SettingsActivity extends AppCompatActivity {
 
     SessionManager sessionManager;
 
+    private long backPressedTime;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +102,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(SettingsActivity.this,"Something wrong happened!", Toast.LENGTH_LONG).show();
+                Toast.makeText(SettingsActivity.this,"Something wrong happened!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -129,5 +132,20 @@ public class SettingsActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(backPressedTime + 2000 > System.currentTimeMillis()) {
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
+            finish();
+        }
+        else {
+            Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        backPressedTime = System.currentTimeMillis();
     }
 }
