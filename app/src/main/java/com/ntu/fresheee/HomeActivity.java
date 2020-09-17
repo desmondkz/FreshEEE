@@ -2,6 +2,7 @@ package com.ntu.fresheee;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView scanner;
     private Button btnMap;
 
+    private CardView safeEntrycardView, healthDeclarationcardView;
+
     SessionManager sessionManager;
 
     @Override
@@ -43,8 +46,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         scanner = (ImageView) findViewById(R.id.buttonScanner);
         scanner.setOnClickListener(this);
 
-        btnMap = (Button) findViewById(R.id.safeEntry_map);
-        btnMap.setOnClickListener(this);
+//        btnMap = (Button) findViewById(R.id.safeEntry_map);
+//        btnMap.setOnClickListener(this);
+
+        safeEntrycardView = (CardView) findViewById(R.id.safe_entry_cardView);
+
+        healthDeclarationcardView = (CardView) findViewById(R.id.travel_declaration_cardView);
+        healthDeclarationcardView.setOnClickListener(this);
 
         //Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -81,8 +89,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonScanner:
                 startActivity(new Intent(this, ScannerActivity.class));
                 break;
-            case R.id.safeEntry_map:
-                startActivity(new Intent(this, MapsActivity.class));
+//            case R.id.safeEntry_map:
+//                startActivity(new Intent(this, MapsActivity.class));
+            case R.id.travel_declaration_cardView:
+                startActivity(new Intent(this, WebViewHeathDeclarationActivity.class));
+                break;
         }
     }
 }
