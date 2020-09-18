@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WebViewHeathDeclarationActivity"></activity>
+        <activity android:name=".WebViewUpdatePasswordActivity"></activity>
+        <activity android:name=".WebViewHealthDeclarationActivity" />
         <activity android:name=".MapsActivity" />
 
         <meta-data
@@ -30,6 +31,7 @@
         <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -41,8 +43,6 @@
         <activity android:name=".WebViewActivity" />
         <activity android:name=".ScannerActivity" />
         <activity android:name=".ForgotPasswordActivity" />
-
-
     </application>
 
 </manifest>

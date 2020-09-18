@@ -95,7 +95,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //            case R.id.safeEntry_map:
 //                startActivity(new Intent(this, MapsActivity.class));
             case R.id.travel_declaration_cardView:
-                startActivity(new Intent(this, WebViewHeathDeclarationActivity.class));
+                startActivity(new Intent(this, WebViewHealthDeclarationActivity.class));
                 break;
         }
     }

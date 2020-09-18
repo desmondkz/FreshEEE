@@ -2,22 +2,65 @@ package com.ntu.fresheee;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
+import android.content.pm.PackageManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DiscoveryActivity extends AppCompatActivity {
 
+    private CardView updatePasswordcardView, blackBoardcardView, ntubusNowcardView;
     private long backPressedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discovery);
+
+        blackBoardcardView = (CardView) findViewById(R.id.blackboard_cardView);
+        blackBoardcardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean blackboard_installed = appInstalledOrNot("com.blackboard.android.bbstudent");
+                if(blackboard_installed) {
+                    startActivity(getPackageManager().getLaunchIntentForPackage("com.blackboard.android.bbstudent"));
+                }
+                else {
+                    Toast.makeText(DiscoveryActivity.this, "App not installed", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "com.blackboard.android.bbstudent")));
+                }
+            }
+        });
+
+        ntubusNowcardView = (CardView) findViewById(R.id.ntu_busnow_cardView);
+        ntubusNowcardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean busnow_installed = appInstalledOrNot("pw.adithya.ntubusnow");
+                if(busnow_installed) {
+                    startActivity(getPackageManager().getLaunchIntentForPackage("pw.adithya.ntubusnow"));
+                }
+                else {
+                    Toast.makeText(DiscoveryActivity.this, "App not installed", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + "pw.adithya.ntubusnow")));
+                }
+            }
+        });
+
+        updatePasswordcardView = (CardView) findViewById(R.id.update_password_cardView);
+        updatePasswordcardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(DiscoveryActivity.this, WebViewUpdatePasswordActivity.class));
+            }
+        });
 
         //Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -44,6 +87,19 @@ public class DiscoveryActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private boolean appInstalledOrNot(String uri) {
+        PackageManager packageManager = getPackageManager();
+        boolean app_installed = false;
+        try {
+            packageManager.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            app_installed = true;
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            app_installed = false;
+        }
+        return app_installed;
     }
 
     @Override
