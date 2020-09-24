@@ -16,13 +16,21 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DiscoveryActivity extends AppCompatActivity {
 
-    private CardView updatePasswordcardView, blackBoardcardView, ntubusNowcardView;
+    private CardView updatePasswordcardView, blackBoardcardView, ntubusNowcardView,  ccacardView;
     private long backPressedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discovery);
+
+        updatePasswordcardView = (CardView) findViewById(R.id.update_password_cardView);
+        updatePasswordcardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(DiscoveryActivity.this, WebViewUpdatePasswordActivity.class));
+            }
+        });
 
         blackBoardcardView = (CardView) findViewById(R.id.blackboard_cardView);
         blackBoardcardView.setOnClickListener(new View.OnClickListener() {
@@ -54,13 +62,14 @@ public class DiscoveryActivity extends AppCompatActivity {
             }
         });
 
-        updatePasswordcardView = (CardView) findViewById(R.id.update_password_cardView);
-        updatePasswordcardView.setOnClickListener(new View.OnClickListener() {
+        ccacardView = (CardView) findViewById(R.id.cca_cardView);
+        ccacardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(DiscoveryActivity.this, WebViewUpdatePasswordActivity.class));
+                startActivity(new Intent(DiscoveryActivity.this, WebViewCCAActivity.class));
             }
         });
+
 
         //Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
