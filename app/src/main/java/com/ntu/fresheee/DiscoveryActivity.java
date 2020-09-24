@@ -16,7 +16,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DiscoveryActivity extends AppCompatActivity {
 
-    private CardView updatePasswordcardView, blackBoardcardView, ntubusNowcardView,  ccacardView;
+    private CardView updatePasswordcardView, blackBoardcardView, ntubusNowcardView,  ccacardView,
+                    ntuLibrarycardView;
     private long backPressedTime;
 
     @Override
@@ -67,6 +68,14 @@ public class DiscoveryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(DiscoveryActivity.this, WebViewCCAActivity.class));
+            }
+        });
+
+        ntuLibrarycardView = (CardView) findViewById(R.id.ntu_library_cardView);
+        ntuLibrarycardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(DiscoveryActivity.this, WebViewNTULibraryActivity.class));
             }
         });
 

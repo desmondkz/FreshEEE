@@ -20,7 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WebViewCCAActivity"></activity>
+        <activity android:name=".WebViewNTULibraryActivity"></activity>
+        <activity android:name=".WebViewCCAActivity" />
         <activity android:name=".WebViewTempDeclarationActivity" />
         <activity android:name=".WebViewUpdatePasswordActivity" />
         <activity android:name=".WebViewTravelDeclarationActivity" />
