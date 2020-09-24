@@ -5,22 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.view.MenuItem;
-
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class WebViewHealthDeclarationActivity extends AppCompatActivity {
+public class WebViewTempDeclarationActivity extends AppCompatActivity {
 
-    private WebView healthDeclarationwebView;
-    private String url = "https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=2&p2=https://wis.ntu.edu.sg/pls/webexe88/declare_overseas.plans&extra=&pg=";
+    private WebView tempDeclarationwebView;
+    private String url = "https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wis.ntu.edu.sg/pls/webexe/str_stud.BRANCH_STUD";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_web_view_health_declaration);
+        setContentView(R.layout.activity_web_view_temp_declaration);
 
         //Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -47,16 +46,16 @@ public class WebViewHealthDeclarationActivity extends AppCompatActivity {
             }
         });
 
-        healthDeclarationwebView = (WebView) findViewById(R.id.health_declaration_webview);
-        healthDeclarationwebView.setWebViewClient(new WebViewClient());
-        healthDeclarationwebView.getSettings().setJavaScriptEnabled(true);
-        healthDeclarationwebView.loadUrl(url);
+        tempDeclarationwebView = (WebView) findViewById(R.id.temp_declaration_webview);
+        tempDeclarationwebView.setWebViewClient(new WebViewClient());
+        tempDeclarationwebView.getSettings().setJavaScriptEnabled(true);
+        tempDeclarationwebView.loadUrl(url);
     }
 
     @Override
     public void onBackPressed() {
-        if(healthDeclarationwebView.canGoBack()) {
-            healthDeclarationwebView.goBack();
+        if(tempDeclarationwebView.canGoBack()) {
+            tempDeclarationwebView.goBack();
         }
         else {
             super.onBackPressed();

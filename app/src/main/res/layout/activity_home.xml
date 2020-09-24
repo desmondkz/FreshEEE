@@ -83,7 +83,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/travel_declaration_cardView"
+            android:id="@+id/temp_declaration_cardView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
@@ -94,21 +94,21 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/travel_declaration_textView"
+                    android:id="@+id/temp_declaration_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/icon_travel_declaration"
+                    android:layout_below="@id/icon_temp_declaration"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
-                    android:text="Travel Declaration" />
+                    android:text="Temperature Declaration" />
 
                 <ImageView
-                    android:id="@+id/icon_travel_declaration"
+                    android:id="@+id/icon_temp_declaration"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="20dp"
-                    app:srcCompat="@drawable/ic_travel_declaration" />
+                    app:srcCompat="@drawable/ic_temp_declaration" />
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
 

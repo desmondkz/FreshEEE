@@ -19,8 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -75,7 +73,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         safeEntrycardView = (CardView) findViewById(R.id.safe_entry_cardView);
 
-        healthDeclarationcardView = (CardView) findViewById(R.id.travel_declaration_cardView);
+        healthDeclarationcardView = (CardView) findViewById(R.id.temp_declaration_cardView);
         healthDeclarationcardView.setOnClickListener(this);
 
         //Initialize and assign variable
@@ -115,8 +113,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 //            case R.id.safeEntry_map:
 //                startActivity(new Intent(this, MapsActivity.class));
-            case R.id.travel_declaration_cardView:
-                startActivity(new Intent(this, WebViewHealthDeclarationActivity.class));
+            case R.id.temp_declaration_cardView:
+                startActivity(new Intent(this, WebViewTempDeclarationActivity.class));
                 break;
         }
     }

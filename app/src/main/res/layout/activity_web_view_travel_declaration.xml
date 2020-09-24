@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WebViewHealthDeclarationActivity">
+    tools:context=".WebViewTravelDeclarationActivity">
 
     <WebView
-        android:id="@+id/health_declaration_webview"
+        android:id="@+id/travel_declaration_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
