@@ -5,11 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.budiyev.android.codescanner.CodeScanner;
@@ -46,7 +42,7 @@ public class ScannerActivity extends AppCompatActivity {
                     public void run() {
                         //Toast.makeText(ScannerActivity.this, result.getText(), Toast.LENGTH_LONG).show();
                         String url = result.getText().toString().trim();
-                        Intent i = new Intent(ScannerActivity.this, WebViewActivity.class);
+                        Intent i = new Intent(ScannerActivity.this, WebViewQRActivity.class);
                         i.putExtra("URL", url);
                         startActivity(i);
 

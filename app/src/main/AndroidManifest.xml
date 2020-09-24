@@ -39,7 +39,7 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".DiscoveryActivity" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".WebViewActivity" />
+        <activity android:name=".WebViewQRActivity" />
         <activity android:name=".ScannerActivity" />
         <activity android:name=".ForgotPasswordActivity" />
     </application>
