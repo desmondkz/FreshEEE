@@ -17,10 +17,9 @@
         app:srcCompat="@drawable/ic_scanner" />
 
     <TextView
-        android:id="@+id/welcome"
+        android:id="@+id/greeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome!"
         android:layout_marginTop="60dp"
         android:layout_marginStart="25dp"
         android:textSize="17sp"
@@ -34,7 +33,7 @@
         android:textSize="17sp"
         android:textStyle="normal"
         android:layout_marginTop="60dp"
-        android:layout_marginStart="105dp" />
+        android:layout_toRightOf="@id/greeting"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

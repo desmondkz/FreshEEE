@@ -19,12 +19,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference reference;
 
+    private TextView greeting;
     private String userID;
     private ImageView scanner;
     private Button btnMap;
@@ -44,7 +50,22 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         //Initialize SharedPreferences and get stored username from local files and display it
         SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
         final TextView welcomeUsernameTextView = (TextView) findViewById(R.id.welcome_username);
-        welcomeUsernameTextView.setText(preferences.getString("userName", null));
+        welcomeUsernameTextView.setText(preferences.getString("userName", null) + " !");
+
+        greeting = (TextView) findViewById(R.id.greeting);
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh");
+        String dateTime = simpleDateFormat.format(calendar.getTime());
+        int hour = Integer.parseInt(dateTime);
+        if(hour >= 0) {
+            greeting.setText("Good Morning, ");
+        }
+        if(hour >= 12) {
+            greeting.setText("Good Afternoon, ");
+        }
+        if(hour >= 18) {
+            greeting.setText("Good Evening, ");
+        }
 
         scanner = (ImageView) findViewById(R.id.buttonScanner);
         scanner.setOnClickListener(this);

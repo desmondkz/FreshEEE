@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WebViewUpdatePasswordActivity"></activity>
+        <activity android:name=".WebViewUpdatePasswordActivity" />
         <activity android:name=".WebViewHealthDeclarationActivity" />
         <activity android:name=".MapsActivity" />
 
