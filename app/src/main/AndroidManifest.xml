@@ -20,18 +20,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WebViewNTULibraryActivity"></activity>
-        <activity android:name=".WebViewCCAActivity" />
-        <activity android:name=".WebViewTempDeclarationActivity" />
-        <activity android:name=".WebViewUpdatePasswordActivity" />
-        <activity android:name=".WebViewTravelDeclarationActivity" />
-        <activity android:name=".MapsActivity" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_api_key" />
 
-        <activity android:name=".WelcomeActivity">
+
+
+        <activity
+            android:name=".WelcomeActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,6 +43,12 @@
         <activity android:name=".WebViewQRActivity" />
         <activity android:name=".ScannerActivity" />
         <activity android:name=".ForgotPasswordActivity" />
+        <activity android:name=".WebViewNTULibraryActivity" />
+        <activity android:name=".WebViewCCAActivity" />
+        <activity android:name=".WebViewTempDeclarationActivity" />
+        <activity android:name=".WebViewUpdatePasswordActivity" />
+        <activity android:name=".WebViewTravelDeclarationActivity" />
+        <activity android:name=".MapsActivity" />
     </application>
 
 </manifest>
