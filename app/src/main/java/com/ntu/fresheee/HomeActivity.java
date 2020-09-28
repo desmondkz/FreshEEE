@@ -33,7 +33,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView scanner;
     private Button btnMap;
 
-    private CardView safeEntrycardView, healthDeclarationcardView;
+    private CardView safeEntrycardView, tempDeclarationcardView;
 
     SessionManager sessionManager;
 
@@ -68,13 +68,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         scanner = (ImageView) findViewById(R.id.buttonScanner);
         scanner.setOnClickListener(this);
 
-//        btnMap = (Button) findViewById(R.id.safeEntry_map);
-//        btnMap.setOnClickListener(this);
+//        safeEntrycardView = (CardView) findViewById(R.id.safe_entry_cardView);
 
-        safeEntrycardView = (CardView) findViewById(R.id.safe_entry_cardView);
-
-        healthDeclarationcardView = (CardView) findViewById(R.id.temp_declaration_cardView);
-        healthDeclarationcardView.setOnClickListener(this);
+        tempDeclarationcardView = (CardView) findViewById(R.id.temp_declaration_cardView);
+        tempDeclarationcardView.setOnClickListener(this);
 
         //Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -101,8 +98,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 return false;
             }
         });
-
-
     }
 
     @Override
@@ -114,7 +109,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //            case R.id.safeEntry_map:
 //                startActivity(new Intent(this, MapsActivity.class));
             case R.id.temp_declaration_cardView:
-                Intent i = new Intent(HomeActivity.this, WebViewMainActivity.class);
+                Intent i = new Intent(HomeActivity.this, WebViewActivity.class);
                 i.putExtra("url", "https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wis.ntu.edu.sg/pls/webexe/str_stud.BRANCH_STUD");
                 startActivity(i);
                 break;
