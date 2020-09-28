@@ -114,7 +114,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //            case R.id.safeEntry_map:
 //                startActivity(new Intent(this, MapsActivity.class));
             case R.id.temp_declaration_cardView:
-                startActivity(new Intent(this, WebViewTempDeclarationActivity.class));
+                Intent i = new Intent(HomeActivity.this, WebViewMainActivity.class);
+                i.putExtra("url", "https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wis.ntu.edu.sg/pls/webexe/str_stud.BRANCH_STUD");
+                startActivity(i);
                 break;
         }
     }

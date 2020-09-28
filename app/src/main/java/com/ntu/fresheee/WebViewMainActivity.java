@@ -8,18 +8,19 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class WebViewTempDeclarationActivity extends AppCompatActivity {
+public class WebViewMainActivity extends AppCompatActivity {
 
-    private WebView tempDeclarationwebView;
-    private String url = "https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wis.ntu.edu.sg/pls/webexe/str_stud.BRANCH_STUD";
+    private WebView webView;
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_web_view_temp_declaration);
+        setContentView(R.layout.activity_web_view_main);
 
         //Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -46,16 +47,18 @@ public class WebViewTempDeclarationActivity extends AppCompatActivity {
             }
         });
 
-        tempDeclarationwebView = (WebView) findViewById(R.id.temp_declaration_webview);
-        tempDeclarationwebView.setWebViewClient(new WebViewClient());
-        tempDeclarationwebView.getSettings().setJavaScriptEnabled(true);
-        tempDeclarationwebView.loadUrl(url);
+        url = getIntent().getStringExtra("url");
+        webView = (WebView) findViewById(R.id.main_webview);
+        webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl(url);
+        Toast.makeText(this, "this is a test", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onBackPressed() {
-        if(tempDeclarationwebView.canGoBack()) {
-            tempDeclarationwebView.goBack();
+        if(webView.canGoBack()) {
+            webView.goBack();
         }
         else {
             super.onBackPressed();
