@@ -52,13 +52,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         greeting = (TextView) findViewById(R.id.greeting);
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH");
         String dateTime = simpleDateFormat.format(calendar.getTime());
         int hour = Integer.parseInt(dateTime);
-        if(hour >= 0) {
+        if(hour >= 0 && hour <= 12) {
             greeting.setText("Good Morning, ");
         }
-        if(hour >= 12) {
+        if(hour >= 12 && hour <= 18) {
             greeting.setText("Good Afternoon, ");
         }
         if(hour >= 18) {
