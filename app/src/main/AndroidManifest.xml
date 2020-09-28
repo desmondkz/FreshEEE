@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WebViewMainActivity"></activity>
+        <activity android:name=".WebViewActivity"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

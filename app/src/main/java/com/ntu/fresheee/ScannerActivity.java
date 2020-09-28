@@ -42,7 +42,7 @@ public class ScannerActivity extends AppCompatActivity {
                     public void run() {
                         //Toast.makeText(ScannerActivity.this, result.getText(), Toast.LENGTH_LONG).show();
                         String url = result.getText().toString().trim();
-                        Intent i = new Intent(ScannerActivity.this, WebViewMainActivity.class);
+                        Intent i = new Intent(ScannerActivity.this, WebViewActivity.class);
                         i.putExtra("url", url);
                         startActivity(i);
                     }
