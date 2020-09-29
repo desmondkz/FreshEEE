@@ -20,7 +20,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WebViewActivity"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -40,15 +39,12 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".DiscoveryActivity" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".WebViewQRActivity" />
         <activity android:name=".ScannerActivity" />
         <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".WebViewNTULibraryActivity" />
-        <activity android:name=".WebViewCCAActivity" />
-        <activity android:name=".WebViewTempDeclarationActivity" />
-        <activity android:name=".WebViewUpdatePasswordActivity" />
-        <activity android:name=".WebViewTravelDeclarationActivity" />
         <activity android:name=".MapsActivity" />
+        <activity
+            android:name=".WebViewActivity"
+            android:parentActivityName=".HomeActivity" />
     </application>
 
 </manifest>
