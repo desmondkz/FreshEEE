@@ -43,8 +43,8 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillOpacity;
 
 public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
 
-    private static final LatLng BOUND_CORNER_NW = new LatLng(1.3510, 103.6810);
-    private static final LatLng BOUND_CORNER_SE = new LatLng(1.3460, 103.6850);
+    private static final LatLng BOUND_CORNER_NW = new LatLng(1.3560, 103.6770);
+    private static final LatLng BOUND_CORNER_SE = new LatLng(1.3400, 103.6900);
     private static final LatLngBounds RESTRICTED_BOUNDS_AREA = new LatLngBounds.Builder()
             .include(BOUND_CORNER_NW)
             .include(BOUND_CORNER_SE)
