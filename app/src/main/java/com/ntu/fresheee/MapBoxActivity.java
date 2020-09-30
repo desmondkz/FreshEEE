@@ -1,17 +1,24 @@
 package com.ntu.fresheee;
 
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
+import com.mapbox.geojson.Polygon;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLngBounds;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.LocationComponentOptions;
@@ -22,6 +29,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.layers.FillLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
 import java.util.ArrayList;
@@ -30,8 +38,20 @@ import java.util.List;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillOpacity;
 
 public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
+
+    private static final LatLng BOUND_CORNER_NW = new LatLng(1.3510, 103.6810);
+    private static final LatLng BOUND_CORNER_SE = new LatLng(1.3460, 103.6850);
+    private static final LatLngBounds RESTRICTED_BOUNDS_AREA = new LatLngBounds.Builder()
+            .include(BOUND_CORNER_NW)
+            .include(BOUND_CORNER_SE)
+            .build();
+
+    private final List<List<Point>> points = new ArrayList<>();
+    private final List<Point> outerPoints = new ArrayList<>();
 
     private static final String SOURCE_ID = "SOURCE_ID";
     private static final String ICON_ID = "ICON_ID";
@@ -67,12 +87,6 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
         MapBoxActivity.this.mapboxMap = mapboxMap;
 
         List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
-        // Junction 8
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(
-                Point.fromLngLat(103.84866, 1.35059)));
-        // Sky Vue
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(
-                Point.fromLngLat(103.85091, 1.35253)));
         // NTU S1-B2
         symbolLayerIconFeatureList.add(Feature.fromGeometry(
                 Point.fromLngLat(103.68078, 1.34362)));
@@ -101,9 +115,38 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
                 ), new Style.OnStyleLoaded() {
             @Override
             public void onStyleLoaded(@NonNull Style style) {
+                // Set the boundary area for the map camera
+                mapboxMap.setLatLngBoundsForCameraTarget(RESTRICTED_BOUNDS_AREA);
+
+                // Set the minimum zoom level of the map camera
+                mapboxMap.setMinZoomPreference(14.2);
+
+                showBoundsArea(style);
+
                 enableLocationComponent(style);
             }
         });
+    }
+
+    private void showBoundsArea(@NonNull Style loadedMapStyle) {
+        outerPoints.add(Point.fromLngLat(RESTRICTED_BOUNDS_AREA.getNorthWest().getLongitude(),
+                RESTRICTED_BOUNDS_AREA.getNorthWest().getLatitude()));
+        outerPoints.add(Point.fromLngLat(RESTRICTED_BOUNDS_AREA.getNorthEast().getLongitude(),
+                RESTRICTED_BOUNDS_AREA.getNorthEast().getLatitude()));
+        outerPoints.add(Point.fromLngLat(RESTRICTED_BOUNDS_AREA.getSouthEast().getLongitude(),
+                RESTRICTED_BOUNDS_AREA.getSouthEast().getLatitude()));
+        outerPoints.add(Point.fromLngLat(RESTRICTED_BOUNDS_AREA.getSouthWest().getLongitude(),
+                RESTRICTED_BOUNDS_AREA.getSouthWest().getLatitude()));
+        outerPoints.add(Point.fromLngLat(RESTRICTED_BOUNDS_AREA.getNorthWest().getLongitude(),
+                RESTRICTED_BOUNDS_AREA.getNorthWest().getLatitude()));
+        points.add(outerPoints);
+
+        loadedMapStyle.addSource(new GeoJsonSource("source-id",
+                Polygon.fromLngLats(points)));
+
+        loadedMapStyle.addLayer(new FillLayer("layer-id", "source-id").withProperties(
+                fillOpacity(.00f)
+        ));
     }
 
     @SuppressWarnings( {"MissingPermission"})
