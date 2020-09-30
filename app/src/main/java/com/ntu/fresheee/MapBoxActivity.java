@@ -14,6 +14,7 @@ import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.LocationComponentOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -110,12 +111,20 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
         // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
 
+            // Enable the most basic pulsing styling by ONLY using
+            // the `.pulseEnabled()` method
+            LocationComponentOptions customLocationComponentOptions = LocationComponentOptions.builder(this)
+                    .pulseEnabled(true)
+                    .build();
+
             // Get an instance of the component
             LocationComponent locationComponent = mapboxMap.getLocationComponent();
 
             // Activate with options
             locationComponent.activateLocationComponent(
-                    LocationComponentActivationOptions.builder(this, loadedMapStyle).build());
+                    LocationComponentActivationOptions.builder(this, loadedMapStyle)
+                            .locationComponentOptions(customLocationComponentOptions)
+                            .build());
 
             // Enable to make component visible
             locationComponent.setLocationComponentEnabled(true);
@@ -124,7 +133,7 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
             locationComponent.setCameraMode(CameraMode.TRACKING);
 
             // Set the component's render mode
-            locationComponent.setRenderMode(RenderMode.COMPASS);
+            locationComponent.setRenderMode(RenderMode.NORMAL);
         }
         else {
             permissionsManager = new PermissionsManager(this);
