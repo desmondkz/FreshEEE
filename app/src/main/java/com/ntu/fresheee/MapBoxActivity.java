@@ -1,10 +1,14 @@
 package com.ntu.fresheee;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.Point;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
@@ -16,10 +20,21 @@ import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+
 public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
+
+    private static final String SOURCE_ID = "SOURCE_ID";
+    private static final String ICON_ID = "ICON_ID";
+    private static final String LAYER_ID = "LAYER_ID";
 
     private PermissionsManager permissionsManager;
     private MapboxMap mapboxMap;
@@ -47,9 +62,44 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+
         MapBoxActivity.this.mapboxMap = mapboxMap;
-        mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
-            @Override public void onStyleLoaded(@NonNull Style style) {
+
+        List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
+        // Junction 8
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(103.84866, 1.35059)));
+        // Sky Vue
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(103.85091, 1.35253)));
+        // NTU S1-B2
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(103.68078, 1.34362)));
+        // NTU S1-B3 (Bus stop)
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(103.67950, 1.34245)));
+        // NTU S2-B3
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(103.68140, 1.34300)));
+        // NTU SouthSpine Koufu
+        symbolLayerIconFeatureList.add(Feature.fromGeometry(
+                Point.fromLngLat(103.68224, 1.34260)));
+
+
+        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/cjf4m44iw0uza2spb3q0a7s41")
+                .withImage(ICON_ID, BitmapFactory.decodeResource(
+                        MapBoxActivity.this.getResources(), R.drawable.mapbox_marker_icon_default))
+                .withSource(new GeoJsonSource(SOURCE_ID,
+                        FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
+                .withLayer(new SymbolLayer(LAYER_ID, SOURCE_ID)
+                        .withProperties(
+                                iconImage(ICON_ID),
+                                iconAllowOverlap(true),
+                                iconIgnorePlacement(true)
+                        )
+                ), new Style.OnStyleLoaded() {
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
                 enableLocationComponent(style);
             }
         });
