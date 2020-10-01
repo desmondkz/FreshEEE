@@ -10,8 +10,10 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.LineString;
 import com.mapbox.geojson.Point;
 import com.mapbox.geojson.Polygon;
 import com.mapbox.android.core.permissions.PermissionsListener;
@@ -32,6 +34,12 @@ import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.layers.FillLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +51,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillOpacity;
 
 public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
 
+
     private static final LatLng BOUND_CORNER_NW = new LatLng(1.3560, 103.6770);
     private static final LatLng BOUND_CORNER_SE = new LatLng(1.3400, 103.6900);
     private static final LatLngBounds RESTRICTED_BOUNDS_AREA = new LatLngBounds.Builder()
@@ -53,19 +62,13 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
     private final List<List<Point>> points = new ArrayList<>();
     private final List<Point> outerPoints = new ArrayList<>();
 
-    private static final String SOURCE_ID = "SOURCE_ID";
-    private static final String ICON_ID = "ICON_ID";
-    private static final String LAYER_ID = "LAYER_ID";
-
     private PermissionsManager permissionsManager;
     private MapboxMap mapboxMap;
     private MapView mapView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         // Mapbox access token is configured here. This needs to be called either in your application
         // object or in the same activity which contains the mapview.
         Mapbox.getInstance(this, getString(R.string.access_token));
@@ -84,46 +87,52 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
 
-        MapBoxActivity.this.mapboxMap = mapboxMap;
+        DatabaseReference entryPointsReference = FirebaseDatabase.getInstance().getReference("entry_points");
 
-        List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
-        // NTU S1-B2
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(
-                Point.fromLngLat(103.68078, 1.34362)));
-        // NTU S1-B3 (Bus stop)
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(
-                Point.fromLngLat(103.67950, 1.34245)));
-        // NTU S2-B3
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(
-                Point.fromLngLat(103.68140, 1.34300)));
-        // NTU SouthSpine Koufu
-        symbolLayerIconFeatureList.add(Feature.fromGeometry(
-                Point.fromLngLat(103.68224, 1.34260)));
-
-
-        mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/cjf4m44iw0uza2spb3q0a7s41")
-                .withImage(ICON_ID, BitmapFactory.decodeResource(
-                        MapBoxActivity.this.getResources(), R.drawable.mapbox_marker_icon_default))
-                .withSource(new GeoJsonSource(SOURCE_ID,
-                        FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
-                .withLayer(new SymbolLayer(LAYER_ID, SOURCE_ID)
-                        .withProperties(
-                                iconImage(ICON_ID),
-                                iconAllowOverlap(true),
-                                iconIgnorePlacement(true)
-                        )
-                ), new Style.OnStyleLoaded() {
+        entryPointsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onStyleLoaded(@NonNull Style style) {
-                // Set the boundary area for the map camera
-                mapboxMap.setLatLngBoundsForCameraTarget(RESTRICTED_BOUNDS_AREA);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<EntryLocation> entryLocationArrayList = new ArrayList<>();
+                List<Feature> symbolLayerIconFeatureList = new ArrayList<>();
 
-                // Set the minimum zoom level of the map camera
-                mapboxMap.setMinZoomPreference(14.2);
+                for(DataSnapshot locationSnapshot: snapshot.getChildren()) {
+                    EntryLocation entryLocation = locationSnapshot.getValue(EntryLocation.class);
+                    entryLocationArrayList.add(entryLocation);
+                    symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(entryLocation.longitude, entryLocation.latitude)));
+                    System.out.println(entryLocation.name);
+                }
 
-                showBoundsArea(style);
+                if (!symbolLayerIconFeatureList.isEmpty()) {
+                    MapBoxActivity.this.mapboxMap = mapboxMap;
+                    mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/cjf4m44iw0uza2spb3q0a7s41")
+                            .withImage("entry_points_icon_id", BitmapFactory.decodeResource(
+                                    MapBoxActivity.this.getResources(), R.drawable.mapbox_marker_icon_default))
+                            .withSource(new GeoJsonSource("entry_points_source_id",
+                                    FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
+                            .withLayer(new SymbolLayer("entry_points_layer_id", "entry_points_source_id")
+                                    .withProperties(
+                                            iconImage("entry_points_icon_id"),
+                                            iconAllowOverlap(true),
+                                            iconIgnorePlacement(true)
+                                    )
+                            ), new Style.OnStyleLoaded() {
+                        @Override
+                        public void onStyleLoaded(@NonNull Style style) {
+                            // Set the boundary area for the map camera
+                            mapboxMap.setLatLngBoundsForCameraTarget(RESTRICTED_BOUNDS_AREA);
 
-                enableLocationComponent(style);
+                            // Set the minimum zoom level of the map camera
+                            mapboxMap.setMinZoomPreference(14.2);
+                            showBoundsArea(style);
+                            enableLocationComponent(style);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println("The read failed: " + error.getMessage());
             }
         });
     }
@@ -141,10 +150,10 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
                 RESTRICTED_BOUNDS_AREA.getNorthWest().getLatitude()));
         points.add(outerPoints);
 
-        loadedMapStyle.addSource(new GeoJsonSource("source-id",
+        loadedMapStyle.addSource(new GeoJsonSource("bounding_box_source_id",
                 Polygon.fromLngLats(points)));
 
-        loadedMapStyle.addLayer(new FillLayer("layer-id", "source-id").withProperties(
+        loadedMapStyle.addLayer(new FillLayer("bounding_box_layer_id", "bounding_box_source_id").withProperties(
                 fillOpacity(.00f)
         ));
     }

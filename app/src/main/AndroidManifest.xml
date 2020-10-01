@@ -25,6 +25,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+        <activity android:name=".SymbolLayerMapillaryActivity"></activity>
         <activity
             android:name=".WelcomeActivity"
             android:theme="@style/SplashTheme">
@@ -40,7 +41,6 @@
         <activity android:name=".DiscoveryActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".ForgotPasswordActivity" />
-
         <activity
             android:name=".ScannerActivity"
             android:parentActivityName=".HomeActivity" />
@@ -50,7 +50,6 @@
         <activity
             android:name=".MapBoxActivity"
             android:parentActivityName=".HomeActivity" />
-
     </application>
 
 </manifest>
