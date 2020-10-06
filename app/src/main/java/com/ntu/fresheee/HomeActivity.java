@@ -96,11 +96,12 @@ public class HomeActivity extends AppCompatActivity {
 
         ImageSlider imageSlider = findViewById(R.id.slider);
         List<SlideModel> slideModelList = new ArrayList<>();
-        slideModelList.add(new SlideModel("https://www.webintravel.com/wp-content/uploads/2020/04/Screen-Shot-2020-04-15-at-6.33.13-PM.png"));
-        slideModelList.add(new SlideModel("https://image.shutterstock.com/z/stock-vector-covid-prevention-promo-design-with-precautions-of-wearing-protective-face-masks-washing-hands-1689778120.jpg"));
-//        slideModelList.add(new SlideModel("", ""));
-//        slideModelList.add(new SlideModel("", ""));
-//        slideModelList.add(new SlideModel("", ""));
+        slideModelList.add(new SlideModel("https://raw.githubusercontent.com/desmondkz/FreshEEE/master/img/mask.png?token=AJKB37SDSQEGSC2KR2MVYL27QUZ2E"));
+        slideModelList.add(new SlideModel("https://raw.githubusercontent.com/desmondkz/FreshEEE/master/img/distancing.png?token=AJKB37QFNGPGDSO6OIGQ5VC7QUZ2M"));
+        slideModelList.add(new SlideModel("https://raw.githubusercontent.com/desmondkz/FreshEEE/master/img/safe_entry.png?token=AJKB37UVNOHWECF5RYOEHMC7QUZ3A"));
+        slideModelList.add(new SlideModel("https://raw.githubusercontent.com/desmondkz/FreshEEE/master/img/temperature.png?token=AJKB37R3KTHHQ3YHX3WRMOK7QUZ3E"));
+        slideModelList.add(new SlideModel("https://raw.githubusercontent.com/desmondkz/FreshEEE/master/img/max_five.png?token=AJKB37XZTV5XWAGUHPEIG4K7QUZ2S"));
+
 
         imageSlider.setImageList(slideModelList, true);
 
