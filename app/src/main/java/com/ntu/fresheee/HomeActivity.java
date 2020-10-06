@@ -14,13 +14,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
     FirebaseAuth mFirebaseAuth;
@@ -89,6 +93,17 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        ImageSlider imageSlider = findViewById(R.id.slider);
+        List<SlideModel> slideModelList = new ArrayList<>();
+        slideModelList.add(new SlideModel("https://www.webintravel.com/wp-content/uploads/2020/04/Screen-Shot-2020-04-15-at-6.33.13-PM.png"));
+        slideModelList.add(new SlideModel("https://image.shutterstock.com/z/stock-vector-covid-prevention-promo-design-with-precautions-of-wearing-protective-face-masks-washing-hands-1689778120.jpg"));
+//        slideModelList.add(new SlideModel("", ""));
+//        slideModelList.add(new SlideModel("", ""));
+//        slideModelList.add(new SlideModel("", ""));
+
+        imageSlider.setImageList(slideModelList, true);
+
 
         //Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
