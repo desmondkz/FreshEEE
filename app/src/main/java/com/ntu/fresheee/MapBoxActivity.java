@@ -39,6 +39,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mapbox.pluginscalebar.ScaleBarOptions;
+import com.mapbox.pluginscalebar.ScaleBarPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,6 +122,13 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
                         public void onStyleLoaded(@NonNull Style style) {
                             // Set the boundary area for the map camera
                             mapboxMap.setLatLngBoundsForCameraTarget(RESTRICTED_BOUNDS_AREA);
+
+
+                            // Set Distance scale bar on map
+                            ScaleBarPlugin scaleBarPlugin = new ScaleBarPlugin(mapView, mapboxMap);
+                            ScaleBarOptions scaleBarOptions = new ScaleBarOptions(MapBoxActivity.this)
+                                    .setMetricUnit(true);
+                            scaleBarPlugin.create(scaleBarOptions);
 
                             // Set the minimum zoom level of the map camera
                             mapboxMap.setMinZoomPreference(14.2);
