@@ -166,7 +166,7 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
             // Enable the most basic pulsing styling by ONLY using
             // the `.pulseEnabled()` method
             LocationComponentOptions customLocationComponentOptions = LocationComponentOptions.builder(this)
-                    .pulseEnabled(true)
+                    .pulseEnabled(false)
                     .build();
 
             // Get an instance of the component
@@ -182,10 +182,10 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
             locationComponent.setLocationComponentEnabled(true);
 
             // Set the component's camera mode
-            locationComponent.setCameraMode(CameraMode.TRACKING);
+            locationComponent.setCameraMode(CameraMode.NONE);
 
             // Set the component's render mode
-            locationComponent.setRenderMode(RenderMode.NORMAL);
+            locationComponent.setRenderMode(RenderMode.COMPASS);
         }
         else {
             permissionsManager = new PermissionsManager(this);
