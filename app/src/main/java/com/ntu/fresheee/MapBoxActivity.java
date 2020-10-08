@@ -1,38 +1,17 @@
 package com.ntu.fresheee;
 
+import android.animation.ValueAnimator;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import android.widget.Toast;
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.FeatureCollection;
-import com.mapbox.geojson.LineString;
-import com.mapbox.geojson.Point;
-import com.mapbox.geojson.Polygon;
-import com.mapbox.android.core.permissions.PermissionsListener;
-import com.mapbox.android.core.permissions.PermissionsManager;
-import com.mapbox.mapboxsdk.Mapbox;
-import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.geometry.LatLngBounds;
-import com.mapbox.mapboxsdk.location.LocationComponent;
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
-import com.mapbox.mapboxsdk.location.LocationComponentOptions;
-import com.mapbox.mapboxsdk.location.modes.CameraMode;
-import com.mapbox.mapboxsdk.location.modes.RenderMode;
-import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
-import com.mapbox.mapboxsdk.maps.Style;
-import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
-import com.mapbox.mapboxsdk.style.layers.FillLayer;
-import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,17 +21,46 @@ import com.google.firebase.database.ValueEventListener;
 import com.mapbox.pluginscalebar.ScaleBarOptions;
 import com.mapbox.pluginscalebar.ScaleBarPlugin;
 
+
+import com.mapbox.android.core.permissions.PermissionsListener;
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.Point;
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.geometry.LatLngBounds;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
+import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.mapbox.geojson.LineString;
+import com.mapbox.geojson.Polygon;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.LocationComponentOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
+import com.mapbox.mapboxsdk.style.layers.FillLayer;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillOpacity;
 
-public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
 
+public class MapBoxActivity extends AppCompatActivity implements
+        OnMapReadyCallback, MapboxMap.OnMapClickListener, PermissionsListener {
 
     private static final LatLng BOUND_CORNER_NW = new LatLng(1.3560, 103.6770);
     private static final LatLng BOUND_CORNER_SE = new LatLng(1.3400, 103.6900);
@@ -65,17 +73,17 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
     private final List<Point> outerPoints = new ArrayList<>();
 
     private PermissionsManager permissionsManager;
-    private MapboxMap mapboxMap;
+    private ValueAnimator markerAnimator;
     private MapView mapView;
+    private MapboxMap mapboxMap;
+    private boolean markerSelected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Mapbox access token is configured here. This needs to be called either in your application
-        // object or in the same activity which contains the mapview.
+
         Mapbox.getInstance(this, getString(R.string.access_token));
 
-        // This contains the MapView in XML and needs to be called after the access token is configured.
         setContentView(R.layout.activity_map_box);
 
         getSupportActionBar().getTitle();
@@ -87,8 +95,7 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     @Override
-    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
-
+    public void onMapReady(@NonNull MapboxMap mapboxMap) {
         DatabaseReference entryPointsReference = FirebaseDatabase.getInstance().getReference("entry_points");
 
         entryPointsReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -106,23 +113,29 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
 
                 if (!symbolLayerIconFeatureList.isEmpty()) {
                     MapBoxActivity.this.mapboxMap = mapboxMap;
-                    mapboxMap.setStyle(new Style.Builder().fromUri("mapbox://styles/mapbox/cjf4m44iw0uza2spb3q0a7s41")
-                            .withImage("entry_points_icon_id", BitmapFactory.decodeResource(
-                                    MapBoxActivity.this.getResources(), R.drawable.mapbox_marker_icon_default))
-                            .withSource(new GeoJsonSource("entry_points_source_id",
-                                    FeatureCollection.fromFeatures(symbolLayerIconFeatureList)))
-                            .withLayer(new SymbolLayer("entry_points_layer_id", "entry_points_source_id")
-                                    .withProperties(
-                                            iconImage("entry_points_icon_id"),
-                                            iconAllowOverlap(true),
-                                            iconIgnorePlacement(true)
-                                    )
-                            ), new Style.OnStyleLoaded() {
+                    mapboxMap.setStyle(Style.LIGHT, new Style.OnStyleLoaded() {
                         @Override
                         public void onStyleLoaded(@NonNull Style style) {
-                            // Set the boundary area for the map camera
-                            mapboxMap.setLatLngBoundsForCameraTarget(RESTRICTED_BOUNDS_AREA);
+                            style.addImage("entry_points_icon_id", BitmapFactory.decodeResource(
+                                    MapBoxActivity.this.getResources(), R.drawable.mapbox_marker_icon_default));
+                            style.addSource(new GeoJsonSource("entry_points_source_id",
+                                    FeatureCollection.fromFeatures(symbolLayerIconFeatureList)));
+                            // Add the selected marker source and layer
+                            style.addSource(new GeoJsonSource("selected_entry_points_source_id"));
+                            // Adding an offset so that the bottom of the blue icon gets fixed to the coordinate, rather than the
+                            // middle of the icon being fixed to the coordinate point.
+                            style.addLayer(new SymbolLayer("entry_points_layer_id", "entry_points_source_id")
+                                    .withProperties(PropertyFactory.iconImage("entry_points_icon_id"),
+                                            iconAllowOverlap(true),
+                                            iconOffset(new Float[]{0f, -0.5f})));
+                            // Adding an offset so that the bottom of the blue icon gets fixed to the coordinate, rather than the
+                            // middle of the icon being fixed to the coordinate point.
+                            style.addLayer(new SymbolLayer("selected_entry_points_layer_id", "selected_entry_points_source_id")
+                                    .withProperties(PropertyFactory.iconImage("entry_points_icon_id"),
+                                            iconAllowOverlap(true),
+                                            iconOffset(new Float[]{0f, -0.5f})));
 
+                            mapboxMap.setLatLngBoundsForCameraTarget(RESTRICTED_BOUNDS_AREA);
 
                             // Set Distance scale bar on map
                             ScaleBarPlugin scaleBarPlugin = new ScaleBarPlugin(mapView, mapboxMap);
@@ -130,7 +143,7 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
                                     .setMetricUnit(true);
                             scaleBarPlugin.create(scaleBarOptions);
 
-                            // Set the minimum zoom level of the map camera
+                            mapboxMap.addOnMapClickListener(MapBoxActivity.this);
                             mapboxMap.setMinZoomPreference(14.2);
                             showBoundsArea(style);
                             enableLocationComponent(style);
@@ -144,6 +157,76 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
                 System.out.println("The read failed: " + error.getMessage());
             }
         });
+    }
+
+    @Override
+    public boolean onMapClick(@NonNull LatLng point) {
+        Style style = mapboxMap.getStyle();
+
+        if (style != null) {
+            final SymbolLayer selectedMarkerSymbolLayer = (SymbolLayer) style.getLayer("selected_entry_points_layer_id");
+            final PointF pixel = mapboxMap.getProjection().toScreenLocation(point);
+
+            List<Feature> features = mapboxMap.queryRenderedFeatures(pixel, "entry_points_layer_id");
+            List<Feature> selectedFeature = mapboxMap.queryRenderedFeatures(pixel, "selected_entry_points_layer_id");
+
+            if (selectedFeature.size() > 0 && markerSelected) {
+                return false;
+            }
+
+            if (features.isEmpty()) {
+                if (markerSelected) {
+                    deselectMarker(selectedMarkerSymbolLayer);
+                }
+                return false;
+            }
+
+            GeoJsonSource source = style.getSourceAs("selected_entry_points_source_id");
+            if (source != null) {
+                source.setGeoJson(FeatureCollection.fromFeatures(new Feature[]{Feature.fromGeometry(features.get(0).geometry())}));
+            }
+
+            if (markerSelected) {
+                deselectMarker(selectedMarkerSymbolLayer);
+            }
+            if (features.size() > 0) {
+                selectMarker(selectedMarkerSymbolLayer);
+            }
+        }
+        return true;
+    }
+
+    private void selectMarker(final SymbolLayer iconLayer) {
+        markerAnimator = new ValueAnimator();
+        markerAnimator.setObjectValues(1f, 1.5f);
+        markerAnimator.setDuration(100);
+        markerAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                iconLayer.setProperties(
+                        PropertyFactory.iconSize((float) animator.getAnimatedValue())
+                );
+            }
+        });
+        markerAnimator.start();
+        markerSelected = true;
+    }
+
+    private void deselectMarker(final SymbolLayer iconLayer) {
+        markerAnimator.setObjectValues(1.5f, 1f);
+        markerAnimator.setDuration(100);
+        markerAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                iconLayer.setProperties(
+                        PropertyFactory.iconSize((float) animator.getAnimatedValue())
+                );
+            }
+        });
+        markerAnimator.start();
+        markerSelected = false;
     }
 
     private void showBoundsArea(@NonNull Style loadedMapStyle) {
@@ -228,22 +311,16 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     @Override
-    @SuppressWarnings( {"MissingPermission"})
-    protected void onStart() {
-        super.onStart();
-        mapView.onStart();
-    }
-
-    @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         mapView.onResume();
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        mapView.onPause();
+    @SuppressWarnings( {"MissingPermission"})
+    protected void onStart() {
+        super.onStart();
+        mapView.onStart();
     }
 
     @Override
@@ -253,15 +330,9 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
     }
 
     @Override
@@ -270,4 +341,21 @@ public class MapBoxActivity extends AppCompatActivity implements OnMapReadyCallb
         mapView.onLowMemory();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mapboxMap != null) {
+            mapboxMap.removeOnMapClickListener(this);
+        }
+        if (markerAnimator != null) {
+            markerAnimator.cancel();
+        }
+        mapView.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
 }
