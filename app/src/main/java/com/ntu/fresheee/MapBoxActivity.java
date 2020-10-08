@@ -107,8 +107,11 @@ public class MapBoxActivity extends AppCompatActivity implements
                 for(DataSnapshot locationSnapshot: snapshot.getChildren()) {
                     EntryLocation entryLocation = locationSnapshot.getValue(EntryLocation.class);
                     entryLocationArrayList.add(entryLocation);
-                    symbolLayerIconFeatureList.add(Feature.fromGeometry(Point.fromLngLat(entryLocation.longitude, entryLocation.latitude)));
-                    System.out.println(entryLocation.name);
+
+                    Feature newFeature = Feature.fromGeometry(Point.fromLngLat(entryLocation.longitude, entryLocation.latitude));
+                    newFeature.addStringProperty("name", entryLocation.name);
+                    symbolLayerIconFeatureList.add(newFeature);
+                    // System.out.println(entryLocation.name);
                 }
 
                 if (!symbolLayerIconFeatureList.isEmpty()) {
@@ -165,38 +168,34 @@ public class MapBoxActivity extends AppCompatActivity implements
 
         if (style != null) {
             final SymbolLayer selectedMarkerSymbolLayer = (SymbolLayer) style.getLayer("selected_entry_points_layer_id");
-            final PointF pixel = mapboxMap.getProjection().toScreenLocation(point);
+            final PointF clickedPixel = mapboxMap.getProjection().toScreenLocation(point);
 
-            List<Feature> features = mapboxMap.queryRenderedFeatures(pixel, "entry_points_layer_id");
-            List<Feature> selectedFeature = mapboxMap.queryRenderedFeatures(pixel, "selected_entry_points_layer_id");
+            List<Feature> clickedFeatures = mapboxMap.queryRenderedFeatures(clickedPixel, "entry_points_layer_id");
+            String clickedFeaturesName = clickedFeatures.get(0).properties().get("name").toString();
 
-            if (selectedFeature.size() > 0 && markerSelected) {
-                return false;
-            }
-
-            if (features.isEmpty()) {
+            if (clickedFeatures.isEmpty()) {
                 if (markerSelected) {
                     deselectMarker(selectedMarkerSymbolLayer);
                 }
                 return false;
             }
 
-            GeoJsonSource source = style.getSourceAs("selected_entry_points_source_id");
-            if (source != null) {
-                source.setGeoJson(FeatureCollection.fromFeatures(new Feature[]{Feature.fromGeometry(features.get(0).geometry())}));
+            GeoJsonSource selectedEntryPointsSource = style.getSourceAs("selected_entry_points_source_id");
+            if (selectedEntryPointsSource != null) {
+                selectedEntryPointsSource.setGeoJson(FeatureCollection.fromFeatures(new Feature[]{Feature.fromGeometry(clickedFeatures.get(0).geometry())}));
             }
 
             if (markerSelected) {
                 deselectMarker(selectedMarkerSymbolLayer);
             }
-            if (features.size() > 0) {
-                selectMarker(selectedMarkerSymbolLayer);
+            if (clickedFeatures.size() > 0) {
+                selectMarker(selectedMarkerSymbolLayer, clickedFeaturesName);
             }
         }
         return true;
     }
 
-    private void selectMarker(final SymbolLayer iconLayer) {
+    private void selectMarker(final SymbolLayer selectedMarkerSymbolLayer, String name) {
         markerAnimator = new ValueAnimator();
         markerAnimator.setObjectValues(1f, 1.5f);
         markerAnimator.setDuration(100);
@@ -204,13 +203,15 @@ public class MapBoxActivity extends AppCompatActivity implements
 
             @Override
             public void onAnimationUpdate(ValueAnimator animator) {
-                iconLayer.setProperties(
+                selectedMarkerSymbolLayer.setProperties(
                         PropertyFactory.iconSize((float) animator.getAnimatedValue())
                 );
             }
         });
         markerAnimator.start();
         markerSelected = true;
+
+        Toast.makeText(MapBoxActivity.this, name, Toast.LENGTH_SHORT).show();
     }
 
     private void deselectMarker(final SymbolLayer iconLayer) {
