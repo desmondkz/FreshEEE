@@ -14,12 +14,42 @@
         mapbox:mapbox_cameraTargetLng="103.6852"
         mapbox:mapbox_cameraZoom="14.2" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_on_top_of_map"
-        android:layout_width="match_parent"
-        android:layout_height="178dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone" />
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/rv_on_top_of_map"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="178dp"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:layout_marginBottom="8dp"-->
+<!--        android:visibility="gone" />-->
+
+    <RelativeLayout
+        android:id="@+id/mapbox_popup"
+        android:layout_width="380dp"
+        android:layout_height="160dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@color/white"
+        android:elevation="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/popup_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="SafeEntry Location"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/popup_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/popup_title"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:textSize="15sp"/>
+
+    </RelativeLayout>
 
 </FrameLayout>

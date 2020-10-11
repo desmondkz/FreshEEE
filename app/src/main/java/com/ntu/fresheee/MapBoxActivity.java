@@ -1,32 +1,68 @@
 package com.ntu.fresheee;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
+import android.app.Dialog;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
-import android.os.Bundle;
-import android.widget.Toast;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.FrameLayout;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+
+
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
+
+
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+
+
 import com.mapbox.pluginscalebar.ScaleBarOptions;
 import com.mapbox.pluginscalebar.ScaleBarPlugin;
-
-
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
+import com.mapbox.geojson.LineString;
+import com.mapbox.geojson.Polygon;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -38,25 +74,79 @@ import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.mapbox.geojson.LineString;
-import com.mapbox.geojson.Polygon;
+import com.mapbox.mapboxsdk.style.layers.FillLayer;
+import com.mapbox.mapboxsdk.style.expressions.Expression;
+import com.mapbox.mapboxsdk.style.layers.CircleLayer;
+import com.mapbox.mapboxsdk.style.layers.Layer;
+import com.mapbox.mapboxsdk.style.layers.LineLayer;
+import com.mapbox.mapboxsdk.style.layers.Property;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonOptions;
+import com.mapbox.mapboxsdk.style.sources.Source;
+import com.mapbox.mapboxsdk.style.sources.TileSet;
+import com.mapbox.mapboxsdk.style.sources.VectorSource;
 import com.mapbox.mapboxsdk.location.LocationComponent;
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
 import com.mapbox.mapboxsdk.location.LocationComponentOptions;
 import com.mapbox.mapboxsdk.location.modes.CameraMode;
 import com.mapbox.mapboxsdk.location.modes.RenderMode;
-import com.mapbox.mapboxsdk.style.layers.FillLayer;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.InputStream;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.ref.WeakReference;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconIgnorePlacement;
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillOpacity;
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.all;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.eq;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.exponential;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.get;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.gte;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.interpolate;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.literal;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.lt;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.match;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.stop;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.toNumber;
+import static com.mapbox.mapboxsdk.style.expressions.Expression.zoom;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleOpacity;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.circleRadius;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAnchor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconImage;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconSize;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineCap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineJoin;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineOpacity;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textColor;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textField;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textIgnorePlacement;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textOffset;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.textSize;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import timber.log.Timber;
+
+import com.squareup.picasso.Picasso;
+
 
 
 public class MapBoxActivity extends AppCompatActivity implements
@@ -78,6 +168,8 @@ public class MapBoxActivity extends AppCompatActivity implements
     private MapboxMap mapboxMap;
     private boolean markerSelected = false;
 
+    private RelativeLayout mapboxPopup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +184,8 @@ public class MapBoxActivity extends AppCompatActivity implements
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        mapboxPopup = findViewById(R.id.mapbox_popup);
     }
 
     @Override
@@ -171,7 +265,7 @@ public class MapBoxActivity extends AppCompatActivity implements
             final PointF clickedPixel = mapboxMap.getProjection().toScreenLocation(point);
 
             List<Feature> clickedFeatures = mapboxMap.queryRenderedFeatures(clickedPixel, "entry_points_layer_id");
-            String clickedFeaturesName = clickedFeatures.get(0).properties().get("name").toString();
+
 
             if (clickedFeatures.isEmpty()) {
                 if (markerSelected) {
@@ -189,6 +283,7 @@ public class MapBoxActivity extends AppCompatActivity implements
                 deselectMarker(selectedMarkerSymbolLayer);
             }
             if (clickedFeatures.size() > 0) {
+                String clickedFeaturesName = clickedFeatures.get(0).properties().get("name").toString().replace("\"", "");
                 selectMarker(selectedMarkerSymbolLayer, clickedFeaturesName);
             }
         }
@@ -200,7 +295,6 @@ public class MapBoxActivity extends AppCompatActivity implements
         markerAnimator.setObjectValues(1f, 1.5f);
         markerAnimator.setDuration(100);
         markerAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-
             @Override
             public void onAnimationUpdate(ValueAnimator animator) {
                 selectedMarkerSymbolLayer.setProperties(
@@ -211,7 +305,13 @@ public class MapBoxActivity extends AppCompatActivity implements
         markerAnimator.start();
         markerSelected = true;
 
-        Toast.makeText(MapBoxActivity.this, name, Toast.LENGTH_SHORT).show();
+        if(mapboxPopup.getVisibility() == View.GONE) {
+            final TextView popupName = (TextView) findViewById(R.id.popup_name);
+            popupName.setText(name);
+            mapboxPopup.setVisibility(View.VISIBLE);
+        }
+
+//        Toast.makeText(MapBoxActivity.this, name, Toast.LENGTH_SHORT).show();
     }
 
     private void deselectMarker(final SymbolLayer iconLayer) {
@@ -228,6 +328,10 @@ public class MapBoxActivity extends AppCompatActivity implements
         });
         markerAnimator.start();
         markerSelected = false;
+
+        if(mapboxPopup.getVisibility() == View.VISIBLE) {
+            mapboxPopup.setVisibility(View.GONE);
+        }
     }
 
     private void showBoundsArea(@NonNull Style loadedMapStyle) {
