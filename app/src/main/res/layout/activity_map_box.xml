@@ -25,18 +25,24 @@
     <RelativeLayout
         android:id="@+id/mapbox_popup"
         android:layout_width="380dp"
-        android:layout_height="160dp"
+        android:layout_height="320dp"
         android:layout_gravity="bottom|center_horizontal"
         android:background="@color/white"
         android:elevation="5dp"
         android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/popup_image"
+            android:layout_width="match_parent"
+            android:layout_height="160dp" />
 
         <TextView
             android:id="@+id/popup_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/popup_image"
             android:text="SafeEntry Location"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -49,6 +55,17 @@
             android:layout_centerHorizontal="true"
             android:layout_margin="10dp"
             android:textSize="15sp"/>
+
+        <Button
+            android:id="@+id/popup_direction_button"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/popup_name"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rounded_corners"
+            android:text="DIRECTION"
+            android:textColor="@color/white" />
 
     </RelativeLayout>
 

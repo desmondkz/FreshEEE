@@ -30,12 +30,13 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'androidx.biometric:biometric:1.0.1'
     implementation 'com.google.firebase:firebase-analytics:17.6.0'
     implementation 'com.google.firebase:firebase-auth:19.4.0'
     implementation 'com.google.firebase:firebase-core:17.5.1'
     implementation 'com.google.firebase:firebase-database:19.5.0'
+    implementation 'com.google.firebase:firebase-storage:19.2.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'com.budiyev.android:code-scanner:2.1.0'
@@ -43,18 +44,22 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
     // Mapbox dependencies
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-core:3.0.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-core:3.1.0'
 //    implementation project(':mapbox-android-sdk-9.5.0')
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:9.5.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-plugin-scalebar-v9:0.5.0'
+//    implementation 'com.mapbox.mapboxsdk:mapbox-android-navigation-ui:0.43.0-alpha.1'
+//    implementation 'com.mapbox.navigation:ui:1.0.0'
+//    implementation 'com.mapbox.navigation:core:1.0.0'
 
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     implementation 'com.github.denzcoskun:ImageSlideshow:0.0.6'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
 
 
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
