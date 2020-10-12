@@ -206,7 +206,7 @@ public class MapBoxActivity extends AppCompatActivity implements
             if (clickedFeatures.size() > 0) {
                 String clickedFeaturesName = clickedFeatures.get(0).properties().get("name").toString().replace("\"", "");
                 String clickedFeaturesImage = clickedFeatures.get(0).properties().get("image").toString().replace("\"", "");
-                mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(point));
+                mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(point), 500);
                 selectMarker(selectedMarkerSymbolLayer, clickedFeaturesName, clickedFeaturesImage);
             }
         }
@@ -232,7 +232,9 @@ public class MapBoxActivity extends AppCompatActivity implements
             final TextView popupName = (TextView) findViewById(R.id.popup_name);
             popupName.setText(name);
             final ImageView popupImage = (ImageView) findViewById(R.id.popup_image);
+            progressBar.setVisibility(View.VISIBLE);
             Glide.with(this).load(image).into(popupImage);
+            progressBar.setVisibility(View.GONE);
 
             mapboxPopup.setVisibility(View.VISIBLE);
         }
