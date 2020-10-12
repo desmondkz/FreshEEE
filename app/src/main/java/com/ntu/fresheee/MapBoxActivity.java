@@ -1,6 +1,5 @@
 package com.ntu.fresheee;
 
-
 import android.animation.ValueAnimator;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
@@ -23,7 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.camera.CameraUpdate;
 import com.mapbox.pluginscalebar.ScaleBarOptions;
 import com.mapbox.pluginscalebar.ScaleBarPlugin;
 import com.mapbox.android.core.permissions.PermissionsListener;
@@ -59,8 +57,6 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillOpacity;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 
 import com.bumptech.glide.Glide;
-
-
 
 public class MapBoxActivity extends AppCompatActivity implements
         OnMapReadyCallback, MapboxMap.OnMapClickListener, PermissionsListener {
