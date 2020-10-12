@@ -14,13 +14,13 @@
         mapbox:mapbox_cameraTargetLng="103.6852"
         mapbox:mapbox_cameraZoom="14.2" />
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/rv_on_top_of_map"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="178dp"-->
-<!--        android:layout_gravity="bottom"-->
-<!--        android:layout_marginBottom="8dp"-->
-<!--        android:visibility="gone" />-->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleInverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center" />
 
     <RelativeLayout
         android:id="@+id/mapbox_popup"

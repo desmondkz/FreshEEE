@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private long backPressedTime;
 
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +79,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(getApplicationContext());
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
 
+        progressBar.setVisibility(View.VISIBLE);
         fbuser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
         userID = fbuser.getUid();
@@ -92,6 +96,7 @@ public class SettingsActivity extends AppCompatActivity {
                 User userProfile = snapshot.getValue(User.class);
 
                 if(userProfile != null) {
+                    progressBar.setVisibility(View.GONE);
                     String fullName = userProfile.fullName;
                     String email = userProfile.email;
 

@@ -20,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.widget.ProgressBar;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.FrameLayout;
@@ -169,6 +170,8 @@ public class MapBoxActivity extends AppCompatActivity implements
     private boolean markerSelected = false;
 
     private RelativeLayout mapboxPopup;
+    private ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,6 +184,8 @@ public class MapBoxActivity extends AppCompatActivity implements
         getSupportActionBar().getTitle();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
@@ -191,6 +196,7 @@ public class MapBoxActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         DatabaseReference entryPointsReference = FirebaseDatabase.getInstance().getReference("entry_points");
+        progressBar.setVisibility(View.VISIBLE);
 
         entryPointsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -231,6 +237,8 @@ public class MapBoxActivity extends AppCompatActivity implements
                                     .withProperties(PropertyFactory.iconImage("entry_points_icon_id"),
                                             iconAllowOverlap(true),
                                             iconOffset(new Float[]{0f, -0.5f})));
+
+                            progressBar.setVisibility(View.GONE);
 
                             mapboxMap.setLatLngBoundsForCameraTarget(RESTRICTED_BOUNDS_AREA);
 
