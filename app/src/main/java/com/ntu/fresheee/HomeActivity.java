@@ -96,11 +96,11 @@ public class HomeActivity extends AppCompatActivity {
 
         ImageSlider imageSlider = findViewById(R.id.slider);
         List<SlideModel> slideModelList = new ArrayList<>();
-        slideModelList.add(new SlideModel("https://raw.githubusercontent.com/desmondkz/FreshEEE/master/img/mask.png?token=AJKB37SDSQEGSC2KR2MVYL27QUZ2E"));
-        slideModelList.add(new SlideModel("https://raw.githubusercontent.com/desmondkz/FreshEEE/master/img/distancing.png?token=AJKB37QFNGPGDSO6OIGQ5VC7QUZ2M"));
-        slideModelList.add(new SlideModel("https://raw.githubusercontent.com/desmondkz/FreshEEE/master/img/safe_entry.png?token=AJKB37UVNOHWECF5RYOEHMC7QUZ3A"));
-        slideModelList.add(new SlideModel("https://raw.githubusercontent.com/desmondkz/FreshEEE/master/img/temperature.png?token=AJKB37R3KTHHQ3YHX3WRMOK7QUZ3E"));
-        slideModelList.add(new SlideModel("https://raw.githubusercontent.com/desmondkz/FreshEEE/master/img/max_five.png?token=AJKB37XZTV5XWAGUHPEIG4K7QUZ2S"));
+        slideModelList.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/fresheee-2020.appspot.com/o/homepage_slider_image%2Fmask.png?alt=media&token=f8320019-d190-4d4a-827a-380895dcfbe2"));
+        slideModelList.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/fresheee-2020.appspot.com/o/homepage_slider_image%2Fsafe_entry.png?alt=media&token=b71f32ff-55b5-48f4-88ae-d08afc4e4aec"));
+        slideModelList.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/fresheee-2020.appspot.com/o/homepage_slider_image%2Fdistancing.png?alt=media&token=4b08f5a2-9e2d-4c0c-90e4-eb29ba2dc83f"));
+        slideModelList.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/fresheee-2020.appspot.com/o/homepage_slider_image%2Ftemperature.png?alt=media&token=34943cdd-e3aa-426f-a846-ff4c2a9f46ed"));
+        slideModelList.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/fresheee-2020.appspot.com/o/homepage_slider_image%2Fmax_five.png?alt=media&token=a52833b8-06dd-4526-9a22-20042bfc129a"));
 
 
         imageSlider.setImageList(slideModelList, true);
