@@ -1,29 +1,35 @@
 package com.ntu.fresheee;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-import android.widget.ProgressBar;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-
-import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.pluginscalebar.ScaleBarOptions;
-import com.mapbox.pluginscalebar.ScaleBarPlugin;
+import com.mapbox.android.core.location.LocationEngine;
+import com.mapbox.android.core.location.LocationEngineCallback;
+import com.mapbox.android.core.location.LocationEngineProvider;
+import com.mapbox.android.core.location.LocationEngineRequest;
+import com.mapbox.android.core.location.LocationEngineResult;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.geojson.Feature;
@@ -31,32 +37,35 @@ import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
 import com.mapbox.geojson.Polygon;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
+import com.mapbox.mapboxsdk.style.layers.FillLayer;
 import com.mapbox.mapboxsdk.style.layers.PropertyFactory;
 import com.mapbox.mapboxsdk.style.layers.SymbolLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
-import com.mapbox.mapboxsdk.style.layers.FillLayer;
-import com.mapbox.mapboxsdk.location.LocationComponent;
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
-import com.mapbox.mapboxsdk.location.LocationComponentOptions;
-import com.mapbox.mapboxsdk.location.modes.CameraMode;
-import com.mapbox.mapboxsdk.location.modes.RenderMode;
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.navigation.core.MapboxNavigation;
+import com.mapbox.pluginscalebar.ScaleBarOptions;
+import com.mapbox.pluginscalebar.ScaleBarPlugin;
 
-
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillOpacity;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
+import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 
-import com.bumptech.glide.Glide;
+//import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
+//import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
 
 public class MapBoxActivity extends AppCompatActivity implements
         OnMapReadyCallback, MapboxMap.OnMapClickListener, PermissionsListener {
@@ -76,9 +85,20 @@ public class MapBoxActivity extends AppCompatActivity implements
     private MapView mapView;
     private MapboxMap mapboxMap;
     private boolean markerSelected = false;
+    private LocationEngine locationEngine;
+    private long INTERVAL_IN_MILLISECONDS = 10000L;
+    private long MAX_WAIT_TIME = INTERVAL_IN_MILLISECONDS * 5;
+    private MapBoxActivityLocationCallback callback = new MapBoxActivityLocationCallback(this);
+//    private NavigationMapRoute navigationMapRoute;
+    private static final String TAG = "MapBoxActivity";
 
+    private Button btnDirection;
     private RelativeLayout mapboxPopup;
     private ProgressBar progressBar;
+
+    private LatLng userCurrentLatLng;
+
+    private MapboxNavigation mapboxNavigation;
 
 
     @Override
@@ -99,6 +119,7 @@ public class MapBoxActivity extends AppCompatActivity implements
         mapView.getMapAsync(this);
 
         mapboxPopup = findViewById(R.id.mapbox_popup);
+        btnDirection = findViewById(R.id.popup_direction_button);
     }
 
     @Override
@@ -138,7 +159,7 @@ public class MapBoxActivity extends AppCompatActivity implements
                             // middle of the icon being fixed to the coordinate point.
                             style.addLayer(new SymbolLayer("entry_points_layer_id", "entry_points_source_id")
                                     .withProperties(PropertyFactory.iconImage("entry_points_icon_id"),
-                                            iconAllowOverlap(true),
+                                            iconAllowOverlap(false),
                                             iconOffset(new Float[]{0f, -0.5f})));
                             // Adding an offset so that the bottom of the blue icon gets fixed to the coordinate, rather than the
                             // middle of the icon being fixed to the coordinate point.
@@ -161,6 +182,8 @@ public class MapBoxActivity extends AppCompatActivity implements
                             mapboxMap.setMinZoomPreference(14.2);
                             showBoundsArea(style);
                             enableLocationComponent(style);
+                            mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(userCurrentLatLng));
+                            Toast.makeText(MapBoxActivity.this, "You can zoom in and out to see more SafeEntry Location around the campus!", Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -200,16 +223,14 @@ public class MapBoxActivity extends AppCompatActivity implements
                 deselectMarker(selectedMarkerSymbolLayer);
             }
             if (clickedFeatures.size() > 0) {
-                String clickedFeaturesName = clickedFeatures.get(0).properties().get("name").toString().replace("\"", "");
-                String clickedFeaturesImage = clickedFeatures.get(0).properties().get("image").toString().replace("\"", "");
                 mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(point), 500);
-                selectMarker(selectedMarkerSymbolLayer, clickedFeaturesName, clickedFeaturesImage);
+                selectMarker(selectedMarkerSymbolLayer, clickedFeatures.get(0));
             }
         }
         return true;
     }
 
-    private void selectMarker(final SymbolLayer selectedMarkerSymbolLayer, String name, String image) {
+    private void selectMarker(final SymbolLayer selectedMarkerSymbolLayer, Feature clickFeature) {
         markerAnimator = new ValueAnimator();
         markerAnimator.setObjectValues(1f, 1.5f);
         markerAnimator.setDuration(100);
@@ -224,15 +245,27 @@ public class MapBoxActivity extends AppCompatActivity implements
         markerAnimator.start();
         markerSelected = true;
 
+        Point clickPoint = ((Point) clickFeature.geometry());
+
         if(mapboxPopup.getVisibility() == View.GONE) {
             final TextView popupName = (TextView) findViewById(R.id.popup_name);
-            popupName.setText(name);
+            popupName.setText(clickFeature.properties().get("name").toString().replace("\"", ""));
             final ImageView popupImage = (ImageView) findViewById(R.id.popup_image);
-            progressBar.setVisibility(View.VISIBLE);
-            Glide.with(this).load(image).into(popupImage);
-            progressBar.setVisibility(View.GONE);
+            Glide.with(this).load(clickFeature.properties().get("image").toString().replace("\"", "")).into(popupImage);
+            final LatLng originLatLng = new LatLng(userCurrentLatLng.getLatitude(), userCurrentLatLng.getLongitude());
+            final LatLng destinationLatLng = new LatLng(clickPoint.latitude(), clickPoint.longitude());
 
             mapboxPopup.setVisibility(View.VISIBLE);
+            btnDirection.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getRoute(originLatLng, destinationLatLng);
+                    String uri = "http://maps.google.com/maps?saddr=" + originLatLng.getLatitude() + "," + originLatLng.getLongitude()
+                            + "&daddr=" + destinationLatLng.getLatitude() + "," + destinationLatLng.getLongitude();
+                    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                    startActivity(i);
+                }
+            });
         }
 
 //        Toast.makeText(MapBoxActivity.this, name, Toast.LENGTH_SHORT).show();
@@ -279,16 +312,22 @@ public class MapBoxActivity extends AppCompatActivity implements
         ));
     }
 
+    @SuppressLint("MissingPermission")
+    private void initLocationEngine() {
+        locationEngine = LocationEngineProvider.getBestLocationEngine(this);
+
+        LocationEngineRequest request = new LocationEngineRequest.Builder(INTERVAL_IN_MILLISECONDS)
+                .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
+                .setMaxWaitTime(MAX_WAIT_TIME).build();
+
+        locationEngine.requestLocationUpdates(request, callback, getMainLooper());
+        locationEngine.getLastLocation(callback);
+    }
+
     @SuppressWarnings( {"MissingPermission"})
     private void enableLocationComponent(@NonNull Style loadedMapStyle) {
         // Check if permissions are enabled and if not request
         if (PermissionsManager.areLocationPermissionsGranted(this)) {
-
-            // Enable the most basic pulsing styling by ONLY using
-            // the `.pulseEnabled()` method
-            LocationComponentOptions customLocationComponentOptions = LocationComponentOptions.builder(this)
-                    .pulseEnabled(false)
-                    .build();
 
             // Get an instance of the component
             LocationComponent locationComponent = mapboxMap.getLocationComponent();
@@ -296,7 +335,6 @@ public class MapBoxActivity extends AppCompatActivity implements
             // Activate with options
             locationComponent.activateLocationComponent(
                     LocationComponentActivationOptions.builder(this, loadedMapStyle)
-                            .locationComponentOptions(customLocationComponentOptions)
                             .build());
 
             // Enable to make component visible
@@ -307,6 +345,8 @@ public class MapBoxActivity extends AppCompatActivity implements
 
             // Set the component's render mode
             locationComponent.setRenderMode(RenderMode.COMPASS);
+
+            initLocationEngine();
         }
         else {
             permissionsManager = new PermissionsManager(this);
@@ -337,6 +377,41 @@ public class MapBoxActivity extends AppCompatActivity implements
             Toast.makeText(this, "user_location_permission_not_granted", Toast.LENGTH_LONG).show();
             finish();
         }
+    }
+
+    private class MapBoxActivityLocationCallback implements LocationEngineCallback<LocationEngineResult> {
+        private final WeakReference<MapBoxActivity> activityWeakReference;
+
+        MapBoxActivityLocationCallback(MapBoxActivity activity) {
+            this.activityWeakReference = new WeakReference<>(activity);
+        }
+
+        @Override
+        public void onSuccess(LocationEngineResult result) {
+            MapBoxActivity activity = activityWeakReference.get();
+
+            if (activity != null) {
+                Location location = result.getLastLocation();
+
+                if (location == null) {
+                    return;
+                }
+
+                userCurrentLatLng = new LatLng(result.getLastLocation().getLatitude(), result.getLastLocation().getLongitude());
+//                Toast.makeText(activity, String.valueOf(result.getLastLocation().getLatitude()) + ", " + String.valueOf(result.getLastLocation().getLongitude()),Toast.LENGTH_LONG).show();
+            }
+        }
+
+        @Override
+        public void onFailure(@NonNull Exception exception) {
+        }
+    }
+
+    private void getRoute(LatLng originLatLng, LatLng destinationLatLng) {
+//        Toast.makeText(this, "Origin Lat: " + String.valueOf(originLatLng.getLatitude()) + ", " + "Origin Lng: " + String.valueOf(originLatLng.getLongitude()) + "| " +
+//                "Destination Lat: " + String.valueOf(destinationLatLng.getLatitude()) + ", " + "Destination Lng: " + String.valueOf(destinationLatLng.getLongitude()), Toast.LENGTH_LONG).show();
+        Point origin = Point.fromLngLat(originLatLng.getLongitude(), originLatLng.getLatitude());
+        Point destination = Point.fromLngLat(destinationLatLng.getLongitude(), destinationLatLng.getLatitude());
     }
 
     @Override
@@ -378,6 +453,9 @@ public class MapBoxActivity extends AppCompatActivity implements
         }
         if (markerAnimator != null) {
             markerAnimator.cancel();
+        }
+        if (locationEngine != null) {
+            locationEngine.removeLocationUpdates(callback);
         }
         mapView.onDestroy();
     }
