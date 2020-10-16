@@ -18,7 +18,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class WebViewActivity extends AppCompatActivity {
 
     private WebView webView;
-    private String url;
 
 
     @Override
@@ -30,7 +29,7 @@ public class WebViewActivity extends AppCompatActivity {
 //        getSupportActionBar().getTitle();
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        url = getIntent().getStringExtra("url");
+        String url = getIntent().getStringExtra("url");
         webView = (WebView) findViewById(R.id.main_webview);
         webView.setWebViewClient(new WebViewClient());
         webView.getSettings().setJavaScriptEnabled(true);

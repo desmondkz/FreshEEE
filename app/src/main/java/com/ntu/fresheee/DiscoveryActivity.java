@@ -16,8 +16,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class DiscoveryActivity extends AppCompatActivity {
 
-    private CardView updatePasswordcardView, blackBoardcardView, ntubusNowcardView,  ccacardView,
-                    ntuLibrarycardView;
     private long backPressedTime;
 
     @Override
@@ -25,7 +23,7 @@ public class DiscoveryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discovery);
 
-        updatePasswordcardView = (CardView) findViewById(R.id.update_password_cardView);
+        CardView updatePasswordcardView = (CardView) findViewById(R.id.update_password_cardView);
         updatePasswordcardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,7 +33,7 @@ public class DiscoveryActivity extends AppCompatActivity {
             }
         });
 
-        blackBoardcardView = (CardView) findViewById(R.id.blackboard_cardView);
+        CardView blackBoardcardView = (CardView) findViewById(R.id.blackboard_cardView);
         blackBoardcardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +48,7 @@ public class DiscoveryActivity extends AppCompatActivity {
             }
         });
 
-        ntubusNowcardView = (CardView) findViewById(R.id.ntu_busnow_cardView);
+        CardView ntubusNowcardView = (CardView) findViewById(R.id.ntu_busnow_cardView);
         ntubusNowcardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +63,7 @@ public class DiscoveryActivity extends AppCompatActivity {
             }
         });
 
-        ccacardView = (CardView) findViewById(R.id.cca_cardView);
+        CardView ccacardView = (CardView) findViewById(R.id.cca_cardView);
         ccacardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +73,7 @@ public class DiscoveryActivity extends AppCompatActivity {
             }
         });
 
-        ntuLibrarycardView = (CardView) findViewById(R.id.ntu_library_cardView);
+        CardView ntuLibrarycardView = (CardView) findViewById(R.id.ntu_library_cardView);
         ntuLibrarycardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

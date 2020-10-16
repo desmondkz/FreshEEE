@@ -29,8 +29,8 @@ public class ScannerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
 
-        getSupportActionBar().getTitle();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().getTitle();
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         scannerView = findViewById(R.id.scanner_view);
         codeScanner = new CodeScanner(this,scannerView);

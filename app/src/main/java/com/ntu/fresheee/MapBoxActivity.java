@@ -86,7 +86,7 @@ public class MapBoxActivity extends AppCompatActivity implements
     private LocationEngine locationEngine;
     private final long INTERVAL_IN_MILLISECONDS = 10000L;
     private long MAX_WAIT_TIME = INTERVAL_IN_MILLISECONDS * 5;
-    private MapBoxActivityLocationCallback callback = new MapBoxActivityLocationCallback(this);
+    private final MapBoxActivityLocationCallback callback = new MapBoxActivityLocationCallback(this);
 //    private NavigationMapRoute navigationMapRoute;
     private static final String TAG = "MapBoxActivity";
 
@@ -105,8 +105,8 @@ public class MapBoxActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_map_box);
 
-        getSupportActionBar().getTitle();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().getTitle();
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
