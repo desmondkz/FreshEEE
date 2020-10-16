@@ -2,7 +2,6 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:mapbox="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -34,16 +33,8 @@
         mapbox:backgroundTint="@color/white"
         android:contentDescription="taptocenter"
         android:layout_marginEnd="55dp"
-        android:layout_marginTop="7dp"/>
-
-<!--    <ImageView-->
-<!--        android:id="@+id/tap_to_center"-->
-<!--        android:layout_width="43dp"-->
-<!--        android:layout_height="43dp"-->
-<!--        mapbox:srcCompat="@drawable/ic_gps_fixed_indicator"-->
-<!--        android:layout_marginStart="294dp"-->
-<!--        android:layout_marginTop="7dp"-->
-<!--        android:visibility="visible"/>-->
+        android:layout_marginTop="7dp"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/mapbox_popup"

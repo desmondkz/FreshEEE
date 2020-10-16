@@ -124,6 +124,7 @@ public class MapBoxActivity extends AppCompatActivity implements
         DatabaseReference entryPointsReference = FirebaseDatabase.getInstance().getReference("entry_points");
         progressBar.setVisibility(View.VISIBLE);
 
+
         entryPointsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -166,6 +167,7 @@ public class MapBoxActivity extends AppCompatActivity implements
                                             iconOffset(new Float[]{0f, -0.5f})));
 
                             progressBar.setVisibility(View.GONE);
+                            taptoCenter.setVisibility(View.VISIBLE);
 
                             mapboxMap.setLatLngBoundsForCameraTarget(RESTRICTED_BOUNDS_AREA);
 
