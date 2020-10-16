@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ntu.fresheee">
 
@@ -25,7 +24,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-
+        <activity android:name=".TimeTablePasteActivity"></activity>
+        <activity android:name=".TimeTableInstructionActivity" />
+        <activity android:name=".TimeTableIntroActivity" />
         <activity
             android:name=".WelcomeActivity"
             android:theme="@style/SplashTheme">
@@ -41,11 +42,14 @@
         <activity android:name=".DiscoveryActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".ScannerActivity"
+        <activity
+            android:name=".ScannerActivity"
             android:parentActivityName=".HomeActivity" />
-        <activity android:name=".WebViewActivity"
+        <activity
+            android:name=".WebViewActivity"
             android:parentActivityName=".HomeActivity" />
-        <activity android:name=".MapBoxActivity"
+        <activity
+            android:name=".MapBoxActivity"
             android:parentActivityName=".HomeActivity" />
     </application>
 

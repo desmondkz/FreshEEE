@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +35,7 @@ public class HomeActivity extends AppCompatActivity {
     private String userID;
     private ImageView scanner;
 
-    private CardView safeEntrycardView, tempDeclarationcardView;
+    private CardView safeEntrycardView, tempDeclarationcardView, timeTablecardView;
 
     SessionManager sessionManager;
 
@@ -91,6 +90,14 @@ public class HomeActivity extends AppCompatActivity {
                 Intent i = new Intent(HomeActivity.this, WebViewActivity.class);
                 i.putExtra("url", "https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wis.ntu.edu.sg/pls/webexe/str_stud.BRANCH_STUD");
                 startActivity(i);
+            }
+        });
+
+        timeTablecardView = (CardView) findViewById(R.id.timetable_cardView);
+        timeTablecardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeActivity.this, TimeTableIntroActivity.class));
             }
         });
 
