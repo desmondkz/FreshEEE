@@ -68,7 +68,8 @@
                         android:layout_marginStart="20dp"
                         android:layout_toRightOf="@id/icon_update_password"
                         android:text="Update NTU password"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:textColor="@color/black"/>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
@@ -96,7 +97,8 @@
                         android:layout_marginStart="20dp"
                         android:layout_toRightOf="@id/icon_blackboard"
                         android:text="Open NTU Blackboard"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:textColor="@color/black"/>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
@@ -127,7 +129,8 @@
                         android:layout_marginStart="20dp"
                         android:layout_toRightOf="@id/icon_ntu_busnow"
                         android:text="Open NTU BusNow"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:textColor="@color/black"/>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
@@ -158,7 +161,8 @@
                         android:layout_marginStart="20dp"
                         android:layout_toRightOf="@id/icon_cca"
                         android:text="NTU CCAs (Clubs and Societies)"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:textColor="@color/black"/>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
@@ -189,7 +193,8 @@
                         android:layout_marginStart="20dp"
                         android:layout_toRightOf="@id/icon_ntu_library"
                         android:text="NTU Library Resources"
-                        android:textSize="17sp" />
+                        android:textSize="17sp"
+                        android:textColor="@color/black"/>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
