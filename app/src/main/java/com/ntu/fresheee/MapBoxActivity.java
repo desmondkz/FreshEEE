@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -64,9 +65,6 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.fillOpacity;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconOffset;
 
-//import com.mapbox.services.android.navigation.ui.v5.route.NavigationMapRoute;
-//import com.mapbox.services.android.navigation.v5.navigation.NavigationRoute;
-
 public class MapBoxActivity extends AppCompatActivity implements
         OnMapReadyCallback, MapboxMap.OnMapClickListener, PermissionsListener {
 
@@ -86,20 +84,18 @@ public class MapBoxActivity extends AppCompatActivity implements
     private MapboxMap mapboxMap;
     private boolean markerSelected = false;
     private LocationEngine locationEngine;
-    private long INTERVAL_IN_MILLISECONDS = 10000L;
+    private final long INTERVAL_IN_MILLISECONDS = 10000L;
     private long MAX_WAIT_TIME = INTERVAL_IN_MILLISECONDS * 5;
     private MapBoxActivityLocationCallback callback = new MapBoxActivityLocationCallback(this);
 //    private NavigationMapRoute navigationMapRoute;
     private static final String TAG = "MapBoxActivity";
 
+    private FloatingActionButton taptoCenter;
     private Button btnDirection;
     private RelativeLayout mapboxPopup;
     private ProgressBar progressBar;
 
     private LatLng userCurrentLatLng;
-
-    private MapboxNavigation mapboxNavigation;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +116,7 @@ public class MapBoxActivity extends AppCompatActivity implements
 
         mapboxPopup = findViewById(R.id.mapbox_popup);
         btnDirection = findViewById(R.id.popup_direction_button);
+        taptoCenter = findViewById(R.id.tap_to_center);
     }
 
     @Override
@@ -184,6 +181,13 @@ public class MapBoxActivity extends AppCompatActivity implements
                             enableLocationComponent(style);
                             mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(userCurrentLatLng));
                             Toast.makeText(MapBoxActivity.this, "You can zoom in and out to see more SafeEntry Location around the campus!", Toast.LENGTH_LONG).show();
+
+                            taptoCenter.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(userCurrentLatLng));
+                                }
+                            });
                         }
                     });
                 }
