@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         //Initialize SharedPreferences and get stored username from local files and display it
         SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
         final TextView welcomeUsernameTextView = (TextView) findViewById(R.id.welcome_username);
-        welcomeUsernameTextView.setText(preferences.getString("userName", null) + " !");
+        welcomeUsernameTextView.setText(preferences.getString("userName", null) + "!");
 
         greeting = (TextView) findViewById(R.id.greeting);
         Calendar calendar = Calendar.getInstance();

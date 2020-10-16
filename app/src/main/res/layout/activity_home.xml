@@ -20,17 +20,18 @@
         android:id="@+id/greeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="25dp"
-        android:textSize="17sp"
-        android:textStyle="bold" />
+        android:textSize="21sp"
+        android:textStyle="bold"
+        android:layout_below="@id/buttonScanner"/>
 
     <TextView
         android:id="@+id/welcome_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="17sp"
-        android:textStyle="normal"
+        android:textSize="21sp"
+        android:textStyle="bold"
         android:layout_marginTop="60dp"
         android:layout_toRightOf="@id/greeting" />
 
@@ -48,9 +49,9 @@
         android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="175dp"
-        android:layout_marginTop="100dp"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:layout_below="@id/welcome_username">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/safe_entry_cardView"
@@ -117,7 +118,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="140dp"
-        android:layout_below="@id/linear_layout">
+        android:layout_below="@id/linear_layout"
+        android:layout_margin="10dp">
 
         <com.denzcoskun.imageslider.ImageSlider
             android:id="@+id/slider"
@@ -134,9 +136,5 @@
             app:corner_radius="10" />
 
     </LinearLayout>
-
-
-
-
-
+    
 </RelativeLayout>
