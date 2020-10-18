@@ -3,6 +3,7 @@ package com.ntu.fresheee;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -21,8 +22,7 @@ public class TimeTableInstructionActivity extends AppCompatActivity {
         step_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TimeTableInstructionActivity.this, WebViewActivity.class);
-                i.putExtra("url", "https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wish.wis.ntu.edu.sg/pls/webexe/aus_stars_check.check_subject_web2&extra=&pg=");
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wish.wis.ntu.edu.sg/pls/webexe/aus_stars_check.check_subject_web2&extra=&pg="));
                 startActivity(i);
             }
         });
