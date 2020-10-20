@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TimeTableMainActivity">
+    tools:context=".TimeTableMainActivity"
+    android:background="@color/white">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <TextView
+        android:id="@+id/my_timetable"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="My Timetable"
+        android:textSize="17sp"
+        android:gravity="center_horizontal"
+        android:layout_margin="5dp"/>
+
+    <LinearLayout
+        android:id="@+id/course_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_below="@+id/my_timetable"
+        android:orientation="vertical">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            app:tabTextColor="@color/white"/>
+    </LinearLayout>
 
-    </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

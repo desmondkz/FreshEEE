@@ -13,6 +13,7 @@ public class Course {
     public int index_number;
     public String status;
     public List<ClassSlot> classSlots = new ArrayList<ClassSlot>();
+    public String color;
 
     public Course() {
 
@@ -30,6 +31,7 @@ public class Course {
         this.ger_type = ger_type;
         this.index_number = index_number;
         this.status = status;
+        this.color = color;
 
     }
 

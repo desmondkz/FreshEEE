@@ -3,6 +3,7 @@ package com.ntu.fresheee;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -32,6 +33,7 @@ public class TimetableParser {
         String[] splits = pasteTimetable.split("Remark|TOTAL ");
         String timetable = splits[1];
         String[] rows = timetable.split("\\r?\\n");
+        List<String> courseColours = Arrays.asList("#845EC2", "#D65DB1", "#FF6F91", "#FF9671", "#FFC75F", "#F9F871", "#2C73D2", "#008F7A", "#00C9A7");
 
         for (String row : rows) {
             String[] columns = row.split("\\t");
@@ -40,6 +42,7 @@ public class TimetableParser {
 //                System.out.println("EMPTY ROW");
             } else if (columns.length == 15) {
                 currentCourse = new Course();
+                currentCourse.color = courseColours.get(courses.size());
                 courses.add(currentCourse);
                 currentCourse.course_code = columns[0];
                 currentCourse.title = columns[1];
@@ -58,9 +61,6 @@ public class TimetableParser {
                 newClassSlot.time = columns[12];
                 newClassSlot.venue = columns[13];
                 newClassSlot.remark = columns[14];
-
-//                System.out.println("NEW COURSE WITH TIMETABLE: " + newCourse.title);
-//                System.out.println("NEW " + newClassSlot.type + " WITH TIMETABLE FOR " + newCourse.title);
 
             } else if (columns.length == 6) {
                 ClassSlot newClassSlot = new ClassSlot();

@@ -24,10 +24,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity
-            android:name=".TimeTableMainActivity"
-            android:label="@string/title_activity_time_table_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+
+
+        <activity android:name=".TimeTableMainActivity"></activity>
         <activity android:name=".TimeTablePasteActivity" />
         <activity android:name=".TimeTableInstructionActivity" />
         <activity android:name=".TimeTableIntroActivity" />

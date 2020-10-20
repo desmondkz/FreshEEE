@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/module_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Module Information"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center" />
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="10dp"
+        android:layout_below="@id/module_info"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/divider1"
+        android:text="Name: "
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/popup_course_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/name"
+        android:layout_below="@+id/divider1"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/code"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/popup_course_title"
+        android:text="Code: "
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/popup_course_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/code"
+        android:layout_below="@+id/popup_course_title"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/index_number"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/code"
+        android:text="Index: "
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/popup_course_index_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/index_number"
+        android:layout_below="@+id/popup_course_code"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/au"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/index_number"
+        android:text="AU: "
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/popup_course_au"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/au"
+        android:layout_below="@+id/popup_course_index_number"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/classes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/au"
+        android:text="Classes: "
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:gravity="center" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_margin="10dp"
+        android:layout_below="@id/classes"
+        android:background="?android:attr/listDivider" />
+
+    <TextView
+        android:id="@+id/popup_course_type"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/divider2"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/popup_course_day"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_below="@+id/divider2"
+        android:layout_toEndOf="@id/popup_course_type"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/popup_course_time"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_below="@+id/divider2"
+        android:layout_toEndOf="@id/popup_course_day"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/popup_course_venue"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@+id/divider2"
+        android:layout_toEndOf="@id/popup_course_time"
+        android:textSize="16sp" />
+
+</RelativeLayout>
