@@ -13,7 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="My Timetable"
-        android:textSize="17sp"
+        android:textSize="20sp"
+        android:textStyle="bold"
         android:gravity="center_horizontal"
         android:layout_margin="5dp"/>
 

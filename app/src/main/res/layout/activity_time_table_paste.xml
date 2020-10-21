@@ -31,13 +31,13 @@
 
     <Button
         android:id="@+id/generate_timetable"
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="40dp"
-        android:layout_marginStart="160dp"
+        android:layout_marginStart="210dp"
         android:layout_marginTop="30dp"
         android:layout_below="@+id/editTextTextMultiLine"
         android:background="@drawable/rounded_corners"
-        android:text="GENERATE MY TIMETABLE"
+        android:text="GENERATE"
         android:textColor="@color/white" />
 
 

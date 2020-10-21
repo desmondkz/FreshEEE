@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 public class TimeTablePasteActivity extends AppCompatActivity {
 
     private EditText editTextPasteTimetable;
@@ -60,10 +62,18 @@ public class TimeTablePasteActivity extends AppCompatActivity {
         btnGenerate_timetable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String pasteTimetable = editTextPasteTimetable.getText().toString();
-                Intent i = new Intent(TimeTablePasteActivity.this, TimeTableMainActivity.class);
-                i.putExtra("pasteTimetable", pasteTimetable);
-                startActivity(i);
+                if (editTextPasteTimetable.length() == 0) {
+                    MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(TimeTablePasteActivity.this);
+                    builder.setTitle("Generate Timetable");
+                    builder.setMessage("Please paste your copied timetable in the area above.");
+                    builder.show();
+                }
+                else {
+                    final String pasteTimetable = editTextPasteTimetable.getText().toString();
+                    Intent i = new Intent(TimeTablePasteActivity.this, TimeTableMainActivity.class);
+                    i.putExtra("pasteTimetable", pasteTimetable);
+                    startActivity(i);
+                }
             }
         });
     }
