@@ -38,6 +38,7 @@ import com.mapbox.geojson.FeatureCollection;
 import com.mapbox.geojson.Point;
 import com.mapbox.geojson.Polygon;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.camera.CameraUpdate;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.geometry.LatLngBounds;
@@ -122,8 +123,9 @@ public class MapBoxActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         DatabaseReference entryPointsReference = FirebaseDatabase.getInstance().getReference("entry_points");
-        progressBar.setVisibility(View.VISIBLE);
-
+//        progressBar.setVisibility(View.VISIBLE);
+        LoadingDialog loadingDialog = new LoadingDialog(MapBoxActivity.this);
+        loadingDialog.startLoadingDialog();
 
         entryPointsReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -166,7 +168,9 @@ public class MapBoxActivity extends AppCompatActivity implements
                                             iconAllowOverlap(true),
                                             iconOffset(new Float[]{0f, -0.5f})));
 
-                            progressBar.setVisibility(View.GONE);
+//                            progressBar.setVisibility(View.GONE);
+                            loadingDialog.dismissDialog();
+
                             taptoCenter.setVisibility(View.VISIBLE);
 
                             mapboxMap.setLatLngBoundsForCameraTarget(RESTRICTED_BOUNDS_AREA);
@@ -187,7 +191,7 @@ public class MapBoxActivity extends AppCompatActivity implements
                             taptoCenter.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(userCurrentLatLng));
+                                    mapboxMap.animateCamera(CameraUpdateFactory.newLatLng(userCurrentLatLng), 1000);
                                 }
                             });
                         }

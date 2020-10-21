@@ -71,15 +71,9 @@ public class WelcomeActivity extends AppCompatActivity {
                 break;
             //If phone does not have biometric sensor
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                toLogin.setVisibility(View.VISIBLE);
-                bioLogin.setVisibility(View.GONE);
-                break;
-            //If phone's biometric sensor faulty
+                //If phone's biometric sensor faulty
             case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                toLogin.setVisibility(View.VISIBLE);
-                bioLogin.setVisibility(View.GONE);
-                break;
-            //If phone does not have any biometric data stored
+                //If phone does not have any biometric data stored
             case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
                 toLogin.setVisibility(View.VISIBLE);
                 bioLogin.setVisibility(View.GONE);

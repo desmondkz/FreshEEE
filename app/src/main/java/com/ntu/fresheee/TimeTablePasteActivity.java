@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.style.CharacterStyle;
@@ -30,6 +31,8 @@ public class TimeTablePasteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table_paste);
+
+        LoadingDialog loadingDialog = new LoadingDialog(TimeTablePasteActivity.this);
 
         editTextPasteTimetable = (EditText) findViewById(R.id.editTextTextMultiLine);
         editTextPasteTimetable.addTextChangedListener(new TextWatcher() {
@@ -75,6 +78,8 @@ public class TimeTablePasteActivity extends AppCompatActivity {
                     builder.show();
                 }
                 else {
+                    loadingDialog.startLoadingDialog();
+
                     final String pasteTimetable = editTextPasteTimetable.getText().toString();
                     Intent i = new Intent(TimeTablePasteActivity.this, TimeTableMainActivity.class);
                     i.putExtra("pasteTimetable", pasteTimetable);

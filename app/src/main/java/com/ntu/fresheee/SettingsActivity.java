@@ -82,7 +82,10 @@ public class SettingsActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
 
-        progressBar.setVisibility(View.VISIBLE);
+//        progressBar.setVisibility(View.VISIBLE);
+        LoadingDialog loadingDialog = new LoadingDialog(SettingsActivity.this);
+        loadingDialog.startLoadingDialog();
+
         fbuser = FirebaseAuth.getInstance().getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference("Users");
         userID = fbuser.getUid();
@@ -96,7 +99,9 @@ public class SettingsActivity extends AppCompatActivity {
                 User userProfile = snapshot.getValue(User.class);
 
                 if(userProfile != null) {
-                    progressBar.setVisibility(View.GONE);
+//                    progressBar.setVisibility(View.GONE);
+                    loadingDialog.dismissDialog();
+
                     String fullName = userProfile.fullName;
                     String email = userProfile.email;
 
