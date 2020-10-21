@@ -18,15 +18,48 @@
         android:gravity="center_horizontal"
         android:layout_margin="5dp"/>
 
-    <LinearLayout
-        android:id="@+id/course_linear_layout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/my_timetable"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/my_timetable">
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/weekview_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/my_timetable"
+                android:orientation="vertical">
+
+                <com.github.tlaabs.timetableview.TimetableView
+                    android:id="@+id/weekview_timetable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    app:column_count="6"
+                    app:row_count="14"
+                    app:cell_height="50dp"
+                    app:side_cell_width="30dp"
+                    app:start_time="8"
+                    app:header_title="@array/my_header_title"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/course_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/weekview_linear_layout"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </RelativeLayout>

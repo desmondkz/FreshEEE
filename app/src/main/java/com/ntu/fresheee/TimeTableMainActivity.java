@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alamkanak.weekview.MonthLoader;
+import com.alamkanak.weekview.WeekView;
+import com.alamkanak.weekview.WeekViewEvent;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,11 +25,25 @@ public class TimeTableMainActivity extends AppCompatActivity {
 
     private LinearLayout courseLinearLayout;
     Dialog dialog;
+//    private WeekView mWeekView;
+//    WeekView.EventClickListener mEventClickListener;
+//    MonthLoader.MonthChangeListener mMonthChangeListener;
+//    WeekView.EventLongPressListener mEventLongPressListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table_main);
+
+//        mWeekView = (WeekView) findViewById(R.id.weekView);
+//        mWeekView.setOnEventClickListener(mEventClickListener);
+//        mWeekView.setMonthChangeListener(mMonthChangeListener);
+//        mWeekView.setEventLongPressListener(mEventLongPressListener);
+//
+//
+//        mWeekView.setNumberOfVisibleDays(7);
+
 
         dialog = new Dialog(TimeTableMainActivity.this);
 
