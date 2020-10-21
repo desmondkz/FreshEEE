@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -66,6 +67,11 @@ public class TimeTablePasteActivity extends AppCompatActivity {
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(TimeTablePasteActivity.this);
                     builder.setTitle("Generate Timetable");
                     builder.setMessage("Please paste your copied timetable in the area above.");
+                    builder.setPositiveButton("OKAY", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                        }
+                    });
                     builder.show();
                 }
                 else {
