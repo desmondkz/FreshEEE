@@ -32,6 +32,7 @@ public class WebViewActivity extends AppCompatActivity {
         String url = getIntent().getStringExtra("url");
         webView = (WebView) findViewById(R.id.main_webview);
         webView.setWebViewClient(new WebViewClient());
+        webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(url);
     }
