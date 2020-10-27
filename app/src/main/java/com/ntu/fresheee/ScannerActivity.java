@@ -29,13 +29,10 @@ public class ScannerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
 
-//        getSupportActionBar().getTitle();
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("QR Scanner");
 
         scannerView = findViewById(R.id.scanner_view);
         codeScanner = new CodeScanner(this,scannerView);
-
-
 
         codeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
@@ -43,7 +40,6 @@ public class ScannerActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        //Toast.makeText(ScannerActivity.this, result.getText(), Toast.LENGTH_LONG).show();
                         String url = result.getText().toString().trim();
                         Intent i = new Intent(ScannerActivity.this, WebViewActivity.class);
                         i.putExtra("url", url);

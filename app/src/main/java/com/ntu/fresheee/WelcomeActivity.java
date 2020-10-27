@@ -92,7 +92,6 @@ public class WelcomeActivity extends AppCompatActivity {
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
                 if(sessionManager.getLogin()) {
-//                    Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(WelcomeActivity.this, HomeActivity.class));
                 }
                 else {

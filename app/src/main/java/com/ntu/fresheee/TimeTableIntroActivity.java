@@ -16,6 +16,8 @@ public class TimeTableIntroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table_intro);
 
+        getSupportActionBar().setTitle("");
+
         btnaddTimetable = (Button) findViewById(R.id.buttonAddtimetable);
         btnaddTimetable.setOnClickListener(new View.OnClickListener() {
             @Override

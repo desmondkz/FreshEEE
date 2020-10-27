@@ -45,6 +45,8 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        getSupportActionBar().hide();
+
         btnLogout = (Button) findViewById(R.id.logout);
 
         btnLogout.setOnClickListener(new View.OnClickListener() {

@@ -24,6 +24,8 @@ public class WebViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getSupportActionBar().setTitle("");
+
         setContentView(R.layout.activity_web_view);
 
 //        getSupportActionBar().getTitle();

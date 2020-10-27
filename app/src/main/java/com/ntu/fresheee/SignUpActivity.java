@@ -153,7 +153,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                                         sessionManager.setLogin(true);
 
-
                                         Toast.makeText(SignUpActivity.this,"You have been registered successfully", Toast.LENGTH_SHORT).show();
                                         progressBar.setVisibility(View.GONE);
                                         startActivity(new Intent(SignUpActivity.this, HomeActivity.class));

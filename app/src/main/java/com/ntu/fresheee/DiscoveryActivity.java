@@ -23,6 +23,8 @@ public class DiscoveryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discovery);
 
+        getSupportActionBar().hide();
+
         CardView updatePasswordcardView = (CardView) findViewById(R.id.update_password_cardView);
         updatePasswordcardView.setOnClickListener(new View.OnClickListener() {
             @Override

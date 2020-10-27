@@ -88,13 +88,11 @@ public class MapBoxActivity extends AppCompatActivity implements
     private final long INTERVAL_IN_MILLISECONDS = 10000L;
     private long MAX_WAIT_TIME = INTERVAL_IN_MILLISECONDS * 5;
     private final MapBoxActivityLocationCallback callback = new MapBoxActivityLocationCallback(this);
-//    private NavigationMapRoute navigationMapRoute;
     private static final String TAG = "MapBoxActivity";
 
     private FloatingActionButton taptoCenter;
     private Button btnDirection;
     private RelativeLayout mapboxPopup;
-    private ProgressBar progressBar;
 
     private LatLng userCurrentLatLng;
 
@@ -106,10 +104,10 @@ public class MapBoxActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_map_box);
 
+        getSupportActionBar().setTitle("NTU SafeEntry Map");
+
 //        getSupportActionBar().getTitle();
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
@@ -123,7 +121,7 @@ public class MapBoxActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(@NonNull MapboxMap mapboxMap) {
         DatabaseReference entryPointsReference = FirebaseDatabase.getInstance().getReference("entry_points");
-//        progressBar.setVisibility(View.VISIBLE);
+
         LoadingDialog loadingDialog = new LoadingDialog(MapBoxActivity.this);
         loadingDialog.startLoadingDialog();
 
@@ -168,7 +166,6 @@ public class MapBoxActivity extends AppCompatActivity implements
                                             iconAllowOverlap(true),
                                             iconOffset(new Float[]{0f, -0.5f})));
 
-//                            progressBar.setVisibility(View.GONE);
                             loadingDialog.dismissDialog();
 
                             taptoCenter.setVisibility(View.VISIBLE);

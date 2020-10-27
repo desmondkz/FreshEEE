@@ -18,6 +18,8 @@ public class TimeTableInstructionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table_instruction);
 
+        getSupportActionBar().hide();
+
         step_1 = (Button) findViewById(R.id.step_1);
         step_1.setOnClickListener(new View.OnClickListener() {
             @Override
