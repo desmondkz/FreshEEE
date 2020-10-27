@@ -46,7 +46,7 @@ import com.github.tlaabs.timetableview.*;
 
 public class TimeTableMainActivity extends AppCompatActivity {
 
-    private LinearLayout courseLinearLayout;
+    private LinearLayout courseLinearLayout, classSlotLinearLayout;
     Dialog dialog;
     private String userID;
     private DatabaseReference reference;
@@ -75,10 +75,7 @@ public class TimeTableMainActivity extends AppCompatActivity {
 //            schedule.setEndTime(new Time(12,0));
 //            schedules.add(schedule);
 //            timetable.add(schedules);
-
-        for(ListUtils.EnumeratedItem<Course> courseEnumeratedItem : ListUtils.enumerate(timetableParser.courses)) {
-            Course course = courseEnumeratedItem.item;
-            int index = courseEnumeratedItem.index;
+        for (Course course:timetableParser.courses) {
 
             View currentCourseCardView = View.inflate(TimeTableMainActivity.this, R.layout.course_card, null);
 
@@ -96,6 +93,20 @@ public class TimeTableMainActivity extends AppCompatActivity {
                     ((TextView) coursePopupDialog.findViewById(R.id.popup_course_code)).setText(course.course_code);
                     ((TextView) coursePopupDialog.findViewById(R.id.popup_course_index_number)).setText(course.index_number == -1 ? "N.A." : Integer.toString(course.index_number));
                     ((TextView) coursePopupDialog.findViewById(R.id.popup_course_au)).setText(Integer.toString(course.au));
+
+                    classSlotLinearLayout = (LinearLayout) coursePopupDialog.findViewById(R.id.class_slot_linear_layout);
+
+                    if (course.classSlots.size() > 0) {
+                        for (ClassSlot classSlot:course.classSlots) {
+                            View classSlotRelativeLayout = View.inflate(TimeTableMainActivity.this, R.layout.class_slot, null);
+                            ((TextView) classSlotRelativeLayout.findViewById(R.id.class_type)).setText(classSlot.type);
+                            ((TextView) classSlotRelativeLayout.findViewById(R.id.class_day)).setText(classSlot.day);
+                            ((TextView) classSlotRelativeLayout.findViewById(R.id.class_time)).setText(classSlot.time);
+                            ((TextView) classSlotRelativeLayout.findViewById(R.id.class_venue)).setText(classSlot.venue);
+                            classSlotLinearLayout.addView(classSlotRelativeLayout);
+                        }
+                    }
+
 
                     dialog.setContentView(coursePopupDialog);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
