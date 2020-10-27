@@ -1,5 +1,6 @@
 package com.ntu.fresheee;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ClipData;
@@ -10,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.style.CharacterStyle;
@@ -19,7 +21,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.io.Serializable;
+import java.util.List;
 
 public class TimeTablePasteActivity extends AppCompatActivity {
 
@@ -27,10 +38,16 @@ public class TimeTablePasteActivity extends AppCompatActivity {
     private Button btnGenerate_timetable;
     private ProgressBar progressBar;
 
+    private FirebaseUser fbuser;
+    private DatabaseReference reference;
+    private String userID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table_paste);
+
+        getSupportActionBar().hide();
 
         LoadingDialog loadingDialog = new LoadingDialog(TimeTablePasteActivity.this);
 
@@ -80,10 +97,20 @@ public class TimeTablePasteActivity extends AppCompatActivity {
                 else {
                     loadingDialog.startLoadingDialog();
 
+                    fbuser = FirebaseAuth.getInstance().getCurrentUser();
+                    reference = FirebaseDatabase.getInstance().getReference("Users");
+                    userID = fbuser.getUid();
+
                     final String pasteTimetable = editTextPasteTimetable.getText().toString();
-                    Intent i = new Intent(TimeTablePasteActivity.this, TimeTableMainActivity.class);
-                    i.putExtra("pasteTimetable", pasteTimetable);
-                    startActivity(i);
+                    TimetableParser timetableParser = new TimetableParser();
+                    timetableParser.buildTimetable(pasteTimetable);
+
+                    Intent intent = new Intent(TimeTablePasteActivity.this, TimeTableMainActivity.class);
+                    intent.putExtra("timetableParser", (Serializable) timetableParser);
+
+                    reference.child(userID).child("timetable").setValue(timetableParser.courses);
+
+                    startActivity(intent);
                 }
             }
         });

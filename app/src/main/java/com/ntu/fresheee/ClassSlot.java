@@ -1,6 +1,8 @@
 package com.ntu.fresheee;
 
-public class ClassSlot {
+import java.io.Serializable;
+
+public class ClassSlot implements Serializable {
     public String type;
     public String group;
     public String day;

@@ -1,9 +1,14 @@
 package com.ntu.fresheee;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Course {
+public class Course  implements Serializable{
+
     public String course_code;
     public String title;
     public int au;
@@ -34,6 +39,5 @@ public class Course {
         this.color = color;
 
     }
-
 
 }

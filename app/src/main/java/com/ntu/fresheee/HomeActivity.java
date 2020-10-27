@@ -7,6 +7,7 @@ import androidx.cardview.widget.CardView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,8 +19,13 @@ import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,6 +52,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        getSupportActionBar().hide();
 
         //Initialize SharedPreferences and get stored username from local files and display it
         SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
@@ -97,7 +104,44 @@ public class HomeActivity extends AppCompatActivity {
         timeTablecardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this, TimeTableIntroActivity.class));
+                LoadingDialog loadingDialog = new LoadingDialog(HomeActivity.this);
+                loadingDialog.startLoadingDialog();
+
+                FirebaseUser fbuser = FirebaseAuth.getInstance().getCurrentUser();
+                reference = FirebaseDatabase.getInstance().getReference("Users");
+                userID = fbuser.getUid();
+
+                reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        User userProfile = snapshot.getValue(User.class);
+
+
+                        if(userProfile.timetable.size() == 0) {
+                            startActivity(new Intent(HomeActivity.this, TimeTableIntroActivity.class));
+                        }
+                        else {
+                            TimetableParser timetableParser = new TimetableParser();
+
+                            for(DataSnapshot timetableSnapshot: snapshot.child("timetable").getChildren()) {
+                                Course course = timetableSnapshot.getValue(Course.class);
+                                timetableParser.courses.add(course);
+                            }
+
+                            Intent intent = new Intent(HomeActivity.this, TimeTableMainActivity.class);
+                            intent.putExtra("timetableParser", (Serializable) timetableParser);
+                            startActivity(intent);
+
+                            loadingDialog.dismissDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(HomeActivity.this,"Something wrong happened!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
 

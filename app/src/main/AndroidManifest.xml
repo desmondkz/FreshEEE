@@ -26,11 +26,6 @@
         tools:replace="android:allowBackup">
 
 
-
-        <activity android:name=".TimeTableMainActivity"></activity>
-        <activity android:name=".TimeTablePasteActivity" />
-        <activity android:name=".TimeTableInstructionActivity" />
-        <activity android:name=".TimeTableIntroActivity" />
         <activity
             android:name=".WelcomeActivity"
             android:theme="@style/SplashTheme">
@@ -40,6 +35,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".TimeTableMainActivity"
+            android:parentActivityName=".HomeActivity" />
+        <activity android:name=".TimeTablePasteActivity" />
+        <activity android:name=".TimeTableInstructionActivity" />
+        <activity
+            android:name=".TimeTableIntroActivity"
+            android:parentActivityName=".HomeActivity"/>
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SettingsActivity" />
