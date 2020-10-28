@@ -25,9 +25,14 @@ import com.mapbox.pluginscalebar.ScaleBarPlugin;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.iconAllowOverlap;
@@ -88,6 +93,25 @@ public class TimetableParser implements Serializable{
                 newClassSlot.venue = columns[13];
                 newClassSlot.remark = columns[14];
 
+                if (!newClassSlot.type.equals(" ")) {
+                    String[] startEndTimeSplits = newClassSlot.time.split("-");
+                    String startTimeString = startEndTimeSplits[0];
+                    String endTimeString = startEndTimeSplits[1];
+
+                    newClassSlot.startHour = Integer.parseInt(startTimeString.substring(0, 2));
+                    newClassSlot.startMin = Integer.parseInt(startTimeString.substring(2, 4));
+                    newClassSlot.endHour = Integer.parseInt(endTimeString.substring(0, 2));
+                    newClassSlot.endMin = Integer.parseInt(endTimeString.substring(2, 4));
+                    newClassSlot.intWeekDay = newClassSlot.day.equals("MON") ? 0
+                            : newClassSlot.day.equals("TUE") ? 1
+                            : newClassSlot.day.equals("WED") ? 2
+                            : newClassSlot.day.equals("THU") ? 3
+                            : newClassSlot.day.equals("FRI") ? 4
+                            : newClassSlot.day.equals("SAT") ? 5
+                            : newClassSlot.day.equals("SUN") ? 6 : 0;
+                    System.out.println("test");
+                }
+
             } else if (columns.length == 6) {
                 ClassSlot newClassSlot = new ClassSlot();
                 currentCourse.classSlots.add(newClassSlot);
@@ -97,6 +121,25 @@ public class TimetableParser implements Serializable{
                 newClassSlot.time = columns[3];
                 newClassSlot.venue = columns[4];
                 newClassSlot.remark = columns[5];
+
+                if (!newClassSlot.type.equals(" ")) {
+                    String[] startEndTimeSplits = newClassSlot.time.split("-");
+                    String startTimeString = startEndTimeSplits[0];
+                    String endTimeString = startEndTimeSplits[1];
+
+                    newClassSlot.startHour = Integer.parseInt(startTimeString.substring(0, 2));
+                    newClassSlot.startMin = Integer.parseInt(startTimeString.substring(2, 4));
+                    newClassSlot.endHour = Integer.parseInt(endTimeString.substring(0, 2));
+                    newClassSlot.endMin = Integer.parseInt(endTimeString.substring(2, 4));
+                    newClassSlot.intWeekDay = newClassSlot.day.equals("MON") ? 0
+                            : newClassSlot.day.equals("TUE") ? 1
+                            : newClassSlot.day.equals("WED") ? 2
+                            : newClassSlot.day.equals("THU") ? 3
+                            : newClassSlot.day.equals("FRI") ? 4
+                            : newClassSlot.day.equals("SAT") ? 5
+                            : newClassSlot.day.equals("SUN") ? 6 : 0;
+                    System.out.println("test");
+                }
             } else {
 //                System.out.println("UNKNOWN CASE");
             }

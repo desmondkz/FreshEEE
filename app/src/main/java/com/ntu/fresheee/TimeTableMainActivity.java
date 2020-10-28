@@ -9,8 +9,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alamkanak.weekview.DateTimeInterpreter;
 import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
@@ -29,9 +32,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import org.apache.commons.text.WordUtils;
@@ -50,6 +56,8 @@ public class TimeTableMainActivity extends AppCompatActivity {
     Dialog dialog;
     private String userID;
     private DatabaseReference reference;
+    private TimetableView timetableView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,17 +73,28 @@ public class TimeTableMainActivity extends AppCompatActivity {
 
         TimetableParser timetableParser = (TimetableParser) getIntent().getSerializableExtra("timetableParser");
 
-//            TimetableView timetable = new TimetableView(this);
-//            ArrayList<Schedule> schedules = new ArrayList<Schedule>();
-//            Schedule schedule = new Schedule();
-//            schedule.setClassTitle("Semiconductor");
-//            schedule.setClassPlace("TR+96");
-//            schedule.setDay(1);
-//            schedule.setStartTime(new Time(10,0));
-//            schedule.setEndTime(new Time(12,0));
-//            schedules.add(schedule);
-//            timetable.add(schedules);
+        timetableView = (TimetableView) findViewById(R.id.weekview_timetable);
+
+
+
+//        schedule.setClassPlace("TR+96");
+//        schedule.setDay(1);
+//        schedule.setStartTime(new Time(7,30));
+//        schedule.setEndTime(new Time(15,30));
+//        schedules.add(schedule);
+//        timetableView.add(schedules);
+
         for (Course course:timetableParser.courses) {
+            ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+            for (ClassSlot classSlot: course.classSlots) {
+                Schedule schedule = new Schedule();
+                schedule.setClassTitle(course.course_code + "\n" + classSlot.type);
+                schedule.setClassPlace(classSlot.venue);
+                schedule.setDay(classSlot.intWeekDay);
+                schedule.setStartTime(new Time(classSlot.startHour,classSlot.startMin));
+                schedule.setEndTime(new Time(classSlot.endHour,classSlot.endMin));
+                schedules.add(schedule);
+            }
 
             View currentCourseCardView = View.inflate(TimeTableMainActivity.this, R.layout.course_card, null);
 
@@ -119,13 +138,14 @@ public class TimeTableMainActivity extends AppCompatActivity {
             });
 
             courseLinearLayout.addView(currentCourseCardView);
+            timetableView.add(schedules);
         }
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_timetable, menu);
+        getMenuInflater().inflate(R.menu.menu_timetable, menu);
         return true;
     }
 
@@ -158,7 +178,6 @@ public class TimeTableMainActivity extends AppCompatActivity {
                     }
                 });
                 builder.show();
-
         }
         return super.onOptionsItemSelected(item);
     }

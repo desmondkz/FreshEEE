@@ -20,7 +20,7 @@
             <LinearLayout
                 android:id="@+id/weekview_linear_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <com.github.tlaabs.timetableview.TimetableView
@@ -30,10 +30,11 @@
                     android:padding="10dp"
                     app:column_count="6"
                     app:row_count="14"
-                    app:cell_height="50dp"
+                    app:cell_height="70dp"
                     app:side_cell_width="30dp"
                     app:start_time="8"
-                    app:header_title="@array/my_header_title"/>
+                    app:header_title="@array/my_header_title"
+                    app:sticker_colors="@array/my_sticker_color" />
 
             </LinearLayout>
 
