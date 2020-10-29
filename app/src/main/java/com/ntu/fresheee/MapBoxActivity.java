@@ -106,9 +106,6 @@ public class MapBoxActivity extends AppCompatActivity implements
 
         getSupportActionBar().setTitle("NTU SafeEntry Map");
 
-//        getSupportActionBar().getTitle();
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         mapView = findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
@@ -139,7 +136,6 @@ public class MapBoxActivity extends AppCompatActivity implements
                     newFeature.addStringProperty("name", entryLocation.name);
                     newFeature.addStringProperty("image", entryLocation.image);
                     symbolLayerIconFeatureList.add(newFeature);
-                    // System.out.println(entryLocation.name);
                 }
 
                 if (!symbolLayerIconFeatureList.isEmpty()) {
@@ -274,8 +270,6 @@ public class MapBoxActivity extends AppCompatActivity implements
                 }
             });
         }
-
-//        Toast.makeText(MapBoxActivity.this, name, Toast.LENGTH_SHORT).show();
     }
 
     private void deselectMarker(final SymbolLayer iconLayer) {
@@ -405,7 +399,6 @@ public class MapBoxActivity extends AppCompatActivity implements
                 }
 
                 userCurrentLatLng = new LatLng(result.getLastLocation().getLatitude(), result.getLastLocation().getLongitude());
-//                Toast.makeText(activity, String.valueOf(result.getLastLocation().getLatitude()) + ", " + String.valueOf(result.getLastLocation().getLongitude()),Toast.LENGTH_LONG).show();
             }
         }
 
@@ -415,8 +408,6 @@ public class MapBoxActivity extends AppCompatActivity implements
     }
 
     private void getRoute(LatLng originLatLng, LatLng destinationLatLng) {
-//        Toast.makeText(this, "Origin Lat: " + String.valueOf(originLatLng.getLatitude()) + ", " + "Origin Lng: " + String.valueOf(originLatLng.getLongitude()) + "| " +
-//                "Destination Lat: " + String.valueOf(destinationLatLng.getLatitude()) + ", " + "Destination Lng: " + String.valueOf(destinationLatLng.getLongitude()), Toast.LENGTH_LONG).show();
         Point origin = Point.fromLngLat(originLatLng.getLongitude(), originLatLng.getLatitude());
         Point destination = Point.fromLngLat(destinationLatLng.getLongitude(), destinationLatLng.getLatitude());
     }

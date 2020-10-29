@@ -38,8 +38,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     private long backPressedTime;
 
-    private ProgressBar progressBar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,10 +79,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(getApplicationContext());
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-
-//        progressBar.setVisibility(View.VISIBLE);
         LoadingDialog loadingDialog = new LoadingDialog(SettingsActivity.this);
         loadingDialog.startLoadingDialog();
 
@@ -101,7 +95,6 @@ public class SettingsActivity extends AppCompatActivity {
                 User userProfile = snapshot.getValue(User.class);
 
                 if(userProfile != null) {
-//                    progressBar.setVisibility(View.GONE);
                     loadingDialog.dismissDialog();
 
                     String fullName = userProfile.fullName;

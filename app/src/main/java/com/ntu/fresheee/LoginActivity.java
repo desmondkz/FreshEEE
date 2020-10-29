@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
+    private LoadingDialog loadingDialog;
 
     SessionManager sessionManager;
 
@@ -40,6 +41,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        getSupportActionBar().hide();
+
+        loadingDialog = new LoadingDialog(LoginActivity.this);
+
 
         // Setup SharedPreferences file to store user information locally
         SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
@@ -129,7 +135,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
+        loadingDialog.startLoadingDialog();
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -138,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     FirebaseUser fbuser = FirebaseAuth.getInstance().getCurrentUser();
                     if(fbuser.isEmailVerified()) {
 
-                        // Store user input user fullname and email into SharedPreferences
+                        //Store user input user fullname and email into SharedPreferences
                         SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("email", email);
@@ -151,12 +157,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     else {
                         fbuser.sendEmailVerification();
                         Toast.makeText(LoginActivity.this, "Please check your email to verify your account and login!", Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
+                        loadingDialog.dismissDialog();
                     }
                 }
                 else {
                     Toast.makeText(LoginActivity.this, "Failed to login! Please check your credentials", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
+                    loadingDialog.dismissDialog();
                 }
             }
         });

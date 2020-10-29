@@ -59,7 +59,6 @@ public class TimetableParser implements Serializable{
     public void buildTimetable(String pasteTimetable) {
 
         this.pasteTimetable = pasteTimetable;
-//        System.out.println(pasteTimetable);
 
         String[] splits = pasteTimetable.split("Remark|TOTAL ");
         String timetable = splits[1];
@@ -70,7 +69,6 @@ public class TimetableParser implements Serializable{
             String[] columns = row.split("\\t");
 
             if (columns.length == 1) {
-//                System.out.println("EMPTY ROW");
             } else if (columns.length == 15) {
                 currentCourse = new Course();
                 currentCourse.color = courseColours.get(courses.size());
@@ -109,7 +107,6 @@ public class TimetableParser implements Serializable{
                             : newClassSlot.day.equals("FRI") ? 4
                             : newClassSlot.day.equals("SAT") ? 5
                             : newClassSlot.day.equals("SUN") ? 6 : 0;
-                    System.out.println("test");
                 }
 
             } else if (columns.length == 6) {
@@ -141,7 +138,6 @@ public class TimetableParser implements Serializable{
                     System.out.println("test");
                 }
             } else {
-//                System.out.println("UNKNOWN CASE");
             }
         }
     }

@@ -71,7 +71,6 @@ public class TimeTablePasteActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     return;
                 }
-//                System.out.println(editable);
             }
         });
 

@@ -28,7 +28,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private ImageView logo;
     private EditText editTextEmail,editTextFullName, editTextPassword;
     private TextView tvLogIn;
-    private ProgressBar progressBar;
+    private LoadingDialog loadingDialog;
 
     private FirebaseAuth mAuth;
 
@@ -38,6 +38,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        getSupportActionBar().hide();
+
+        loadingDialog = new LoadingDialog(SignUpActivity.this);
 
         // Setup SharedPreferences file to store user information locally
         SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
@@ -57,11 +61,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         editTextFullName = (EditText) findViewById(R.id.fullName);
         editTextPassword = (EditText) findViewById(R.id.password);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
         sessionManager = new SessionManager(getApplicationContext());
-
-//        mFirebaseAuth = FirebaseAuth.getInstance();
 
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +128,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
+        loadingDialog.startLoadingDialog();
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -154,21 +154,21 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                         sessionManager.setLogin(true);
 
                                         Toast.makeText(SignUpActivity.this,"You have been registered successfully", Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.GONE);
+                                        loadingDialog.dismissDialog();
                                         startActivity(new Intent(SignUpActivity.this, HomeActivity.class));
                                         fbuser.sendEmailVerification();
                                         Toast.makeText(SignUpActivity.this, "Please check your email to verify your account!", Toast.LENGTH_SHORT).show();
                                     }
                                     else {
                                         Toast.makeText(SignUpActivity.this, "Failed to register! Please try again", Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.GONE);
+                                        loadingDialog.dismissDialog();
                                     }
                                 }
                             });
                         }
                         else {
                             Toast.makeText(SignUpActivity.this, "Failed to register! Please try again", Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.GONE);
+                            loadingDialog.dismissDialog();
                         }
                     }
                 });
