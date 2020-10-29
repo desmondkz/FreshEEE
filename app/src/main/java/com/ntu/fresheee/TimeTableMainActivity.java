@@ -76,13 +76,9 @@ public class TimeTableMainActivity extends AppCompatActivity {
         timetableView = (TimetableView) findViewById(R.id.weekview_timetable);
 
 
+        int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        timetableView.setHeaderHighlight(day - 1);
 
-//        schedule.setClassPlace("TR+96");
-//        schedule.setDay(1);
-//        schedule.setStartTime(new Time(7,30));
-//        schedule.setEndTime(new Time(15,30));
-//        schedules.add(schedule);
-//        timetableView.add(schedules);
 
         for (Course course:timetableParser.courses) {
             ArrayList<Schedule> schedules = new ArrayList<Schedule>();
@@ -141,12 +137,20 @@ public class TimeTableMainActivity extends AppCompatActivity {
             timetableView.add(schedules);
         }
 
+        timetableView.setOnStickerSelectEventListener(new TimetableView.OnStickerSelectedListener() {
+            @Override
+            public void OnStickerSelected(int idx, ArrayList<Schedule> schedules) {
+                Toast.makeText(TimeTableMainActivity.this, "test", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_timetable, menu);
         return true;
+
     }
 
     @Override

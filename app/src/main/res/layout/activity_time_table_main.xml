@@ -27,6 +27,7 @@
                     android:id="@+id/weekview_timetable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:padding="10dp"
                     app:column_count="6"
                     app:row_count="14"
@@ -34,6 +35,7 @@
                     app:side_cell_width="30dp"
                     app:start_time="8"
                     app:header_title="@array/my_header_title"
+                    app:header_highlight_color="@color/light_grey"
                     app:sticker_colors="@array/my_sticker_color" />
 
             </LinearLayout>
