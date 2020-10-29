@@ -36,7 +36,6 @@ public class TimeTablePasteActivity extends AppCompatActivity {
 
     private EditText editTextPasteTimetable;
     private Button btnGenerate_timetable;
-    private ProgressBar progressBar;
 
     private FirebaseUser fbuser;
     private DatabaseReference reference;
@@ -76,9 +75,6 @@ public class TimeTablePasteActivity extends AppCompatActivity {
             }
         });
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-
         btnGenerate_timetable = (Button) findViewById(R.id.generate_timetable);
         btnGenerate_timetable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +107,8 @@ public class TimeTablePasteActivity extends AppCompatActivity {
                     reference.child(userID).child("timetable").setValue(timetableParser.courses);
 
                     startActivity(intent);
+                    loadingDialog.dismissDialog();
+                    finish();
                 }
             }
         });

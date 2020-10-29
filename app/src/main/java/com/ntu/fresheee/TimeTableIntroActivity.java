@@ -23,6 +23,7 @@ public class TimeTableIntroActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(TimeTableIntroActivity.this, TimeTableInstructionActivity.class));
+                finish();
             }
         });
 

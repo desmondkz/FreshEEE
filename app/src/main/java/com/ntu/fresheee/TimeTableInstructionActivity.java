@@ -34,6 +34,7 @@ public class TimeTableInstructionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(TimeTableInstructionActivity.this, TimeTablePasteActivity.class));
+                finish();
             }
         });
     }
