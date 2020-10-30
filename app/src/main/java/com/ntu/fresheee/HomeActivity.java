@@ -6,6 +6,7 @@ import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.MenuItem;
@@ -32,9 +33,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
-    FirebaseAuth mFirebaseAuth;
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private FirebaseUser mFirebaseUser;
+
     private DatabaseReference reference;
 
     private TextView greeting;
@@ -42,8 +41,6 @@ public class HomeActivity extends AppCompatActivity {
     private ImageView scanner;
 
     private CardView safeEntrycardView, tempDeclarationcardView, timeTablecardView;
-
-    SessionManager sessionManager;
 
     private long backPressedTime;
 
@@ -94,8 +91,10 @@ public class HomeActivity extends AppCompatActivity {
         tempDeclarationcardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(HomeActivity.this, WebViewActivity.class);
-                i.putExtra("url", "https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wis.ntu.edu.sg/pls/webexe/str_stud.BRANCH_STUD");
+//                Intent i = new Intent(HomeActivity.this, WebViewActivity.class);
+//                i.putExtra("url", "https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wis.ntu.edu.sg/pls/webexe/str_stud.BRANCH_STUD");
+//                startActivity(i);
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://sso.wis.ntu.edu.sg/webexe88/owa/sso_login1.asp?t=1&p2=https://wis.ntu.edu.sg/pls/webexe/str_stud.BRANCH_STUD"));
                 startActivity(i);
             }
         });

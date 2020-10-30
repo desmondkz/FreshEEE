@@ -29,8 +29,10 @@ public class DiscoveryActivity extends AppCompatActivity {
         updatePasswordcardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(DiscoveryActivity.this, WebViewActivity.class);
-                i.putExtra("url", "https://pwd.ntu.edu.sg/");
+//                Intent i = new Intent(DiscoveryActivity.this, WebViewActivity.class);
+//                i.putExtra("url", "https://pwd.ntu.edu.sg/");
+//                startActivity(i);
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://pwd.ntu.edu.sg/"));
                 startActivity(i);
             }
         });
@@ -69,8 +71,10 @@ public class DiscoveryActivity extends AppCompatActivity {
         ccacardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(DiscoveryActivity.this, WebViewActivity.class);
-                i.putExtra("url", "https://www.ntu.edu.sg/SAO/WhoWeAre/StudentOrganisations/StudentOrganisations/Pages/home.aspx");
+//                Intent i = new Intent(DiscoveryActivity.this, WebViewActivity.class);
+//                i.putExtra("url", "https://www.ntu.edu.sg/SAO/WhoWeAre/StudentOrganisations/StudentOrganisations/Pages/home.aspx");
+//                startActivity(i);
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.ntu.edu.sg/SAO/WhoWeAre/StudentOrganisations/StudentOrganisations/Pages/home.aspx"));
                 startActivity(i);
             }
         });
@@ -79,8 +83,10 @@ public class DiscoveryActivity extends AppCompatActivity {
         ntuLibrarycardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(DiscoveryActivity.this, WebViewActivity.class);
-                i.putExtra("url", "https://www.ntu.edu.sg/library/pages/default.aspx");
+//                Intent i = new Intent(DiscoveryActivity.this, WebViewActivity.class);
+//                i.putExtra("url", "https://www.ntu.edu.sg/library/pages/default.aspx");
+//                startActivity(i);
+                Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.ntu.edu.sg/library/pages/default.aspx"));
                 startActivity(i);
             }
         });
