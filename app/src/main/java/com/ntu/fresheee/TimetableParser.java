@@ -63,7 +63,7 @@ public class TimetableParser implements Serializable{
         String[] splits = pasteTimetable.split("Remark|TOTAL ");
         String timetable = splits[1];
         String[] rows = timetable.split("\\r?\\n");
-        List<String> courseColours = Arrays.asList("#845EC2", "#D65DB1", "#FF6F91", "#FF9671", "#FFC75F", "#F9F871", "#2C73D2", "#008F7A", "#00C9A7");
+        List<String> courseColours = Arrays.asList("#A7CA70", "#7AA5E9", "#ECC369", "#7DD1C1", "#F08676", "#9F86E1");
 
         for (String row : rows) {
             String[] columns = row.split("\\t");
@@ -107,6 +107,9 @@ public class TimetableParser implements Serializable{
                             : newClassSlot.day.equals("FRI") ? 4
                             : newClassSlot.day.equals("SAT") ? 5
                             : newClassSlot.day.equals("SUN") ? 6 : 0;
+
+                    newClassSlot.teachingweek = newClassSlot.remark.substring(9);
+
                 }
 
             } else if (columns.length == 6) {
@@ -118,6 +121,7 @@ public class TimetableParser implements Serializable{
                 newClassSlot.time = columns[3];
                 newClassSlot.venue = columns[4];
                 newClassSlot.remark = columns[5];
+
 
                 if (!newClassSlot.type.equals(" ")) {
                     String[] startEndTimeSplits = newClassSlot.time.split("-");
@@ -135,7 +139,8 @@ public class TimetableParser implements Serializable{
                             : newClassSlot.day.equals("FRI") ? 4
                             : newClassSlot.day.equals("SAT") ? 5
                             : newClassSlot.day.equals("SUN") ? 6 : 0;
-                    System.out.println("test");
+
+                    newClassSlot.teachingweek = newClassSlot.remark.substring(9);
                 }
             } else {
             }

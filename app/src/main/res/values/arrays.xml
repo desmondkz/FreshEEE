@@ -20,14 +20,11 @@
     </string-array>
 
     <string-array name="my_sticker_color">
-        <item>#845EC2</item>
-        <item>#D65DB1</item>
-        <item>#FF6F91</item>
-        <item>#FF9671</item>
-        <item>#FFC75F</item>
-        <item>#F9F871</item>
-        <item>#2C73D2</item>
-        <item>#008F7A</item>
-        <item>#00C9A7</item>
+        <item>#A7CA70</item>
+        <item>#7AA5E9</item>
+        <item>#ECC369</item>
+        <item>#7DD1C1</item>
+        <item>#F08676</item>
+        <item>#9F86E1</item>
     </string-array>
 </resources>

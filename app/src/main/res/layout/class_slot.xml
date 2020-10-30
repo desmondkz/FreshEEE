@@ -8,31 +8,42 @@
 
         <TextView
             android:id="@+id/class_type"
-            android:layout_width="79dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:layout_below="@+id/divider2"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/class_teaching_week"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@+id/class_type"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/class_day"
             android:layout_width="32dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="10dp"
-            android:layout_below="@+id/divider2"
-            android:layout_toEndOf="@id/class_type"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@+id/class_type"
+            android:layout_toEndOf="@id/class_teaching_week"
             android:textSize="14sp" />
 
         <TextView
             android:id="@+id/class_time"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="10dp"
-            android:layout_below="@+id/divider2"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@+id/class_type"
             android:layout_toEndOf="@id/class_day"
             android:textSize="14sp" />
 
@@ -40,9 +51,10 @@
             android:id="@+id/class_venue"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="10dp"
-            android:layout_below="@+id/divider2"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@+id/class_type"
             android:layout_toEndOf="@id/class_time"
             android:textSize="14sp" />
 

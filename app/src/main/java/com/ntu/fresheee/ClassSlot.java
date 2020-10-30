@@ -9,6 +9,7 @@ public class ClassSlot implements Serializable {
     public String time;
     public String venue;
     public String remark;
+    public String teachingweek;
     public int startHour;
     public int startMin;
     public int endHour;
@@ -21,7 +22,7 @@ public class ClassSlot implements Serializable {
     }
 
     public ClassSlot(String type,  String group,  String day,  String time,
-                  String venue,  String remark, int startHour, int startMin,
+                  String venue,  String remark, String teachingweek, int startHour, int startMin,
                      int endHour, int endMin, int intWeekDay) {
 
         this.type = type;
@@ -30,6 +31,7 @@ public class ClassSlot implements Serializable {
         this.time = time;
         this.venue = venue;
         this.remark = remark;
+        this.teachingweek = teachingweek;
         this.startHour = startHour;
         this.startMin = startMin;
         this.endHour = endHour;

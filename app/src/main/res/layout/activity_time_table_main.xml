@@ -37,7 +37,7 @@
                     app:side_cell_width="15dp"
                     app:start_time="8"
                     app:header_title="@array/my_header_title"
-                    app:header_highlight_color="@color/light_grey"
+                    app:header_highlight_color="@color/timetableHighlight"
                     app:sticker_colors="@array/my_sticker_color" />
 
             </LinearLayout>

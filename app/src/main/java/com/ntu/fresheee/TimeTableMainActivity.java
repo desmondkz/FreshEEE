@@ -115,6 +115,7 @@ public class TimeTableMainActivity extends AppCompatActivity {
                         for (ClassSlot classSlot:course.classSlots) {
                             View classSlotRelativeLayout = View.inflate(TimeTableMainActivity.this, R.layout.class_slot, null);
                             ((TextView) classSlotRelativeLayout.findViewById(R.id.class_type)).setText(classSlot.type);
+                            ((TextView) classSlotRelativeLayout.findViewById(R.id.class_teaching_week)).setText(classSlot.teachingweek);
                             ((TextView) classSlotRelativeLayout.findViewById(R.id.class_day)).setText(classSlot.day);
                             ((TextView) classSlotRelativeLayout.findViewById(R.id.class_time)).setText(classSlot.time);
                             ((TextView) classSlotRelativeLayout.findViewById(R.id.class_venue)).setText(classSlot.venue);
