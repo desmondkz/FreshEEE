@@ -116,8 +116,8 @@ public class HomeActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         User userProfile = snapshot.getValue(User.class);
 
-
                         if(userProfile.timetable.size() == 0) {
+                            loadingDialog.dismissDialog();
                             startActivity(new Intent(HomeActivity.this, TimeTableIntroActivity.class));
                         }
                         else {
@@ -130,9 +130,8 @@ public class HomeActivity extends AppCompatActivity {
 
                             Intent intent = new Intent(HomeActivity.this, TimeTableMainActivity.class);
                             intent.putExtra("timetableParser", (Serializable) timetableParser);
-                            startActivity(intent);
-
                             loadingDialog.dismissDialog();
+                            startActivity(intent);
                         }
                     }
 
