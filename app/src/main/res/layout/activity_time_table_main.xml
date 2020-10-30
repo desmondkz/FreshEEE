@@ -32,7 +32,7 @@
                     android:paddingStart="5dp"
                     android:paddingEnd="10dp"
                     app:column_count="6"
-                    app:row_count="15"
+                    app:row_count="13"
                     app:cell_height="70dp"
                     app:side_cell_width="15dp"
                     app:start_time="8"

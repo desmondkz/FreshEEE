@@ -151,7 +151,6 @@ public class TimeTableMainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_timetable, menu);
         return true;
-
     }
 
     @Override
