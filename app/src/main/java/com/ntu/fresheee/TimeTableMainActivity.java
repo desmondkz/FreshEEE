@@ -77,7 +77,9 @@ public class TimeTableMainActivity extends AppCompatActivity {
 
 
         int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        timetableView.setHeaderHighlight(day - 1);
+        if (day == 1 && day == 2 && day == 3 && day == 4 && day == 5) {
+            timetableView.setHeaderHighlight(day - 1);
+        }
 
 
         for (Course course:timetableParser.courses) {

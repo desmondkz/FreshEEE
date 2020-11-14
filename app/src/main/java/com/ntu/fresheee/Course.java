@@ -26,7 +26,7 @@ public class Course  implements Serializable{
 
     public Course(String course_code,  String title,  int au,  String course_type,
                   String su_grade_option,  String ger_type,  int index_number,
-                  String status) {
+                  String status, String color) {
 
         this.course_code = course_code;
         this.title = title;
