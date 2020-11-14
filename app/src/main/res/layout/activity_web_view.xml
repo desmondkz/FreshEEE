@@ -5,11 +5,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WebViewActivity">
+    tools:context=".WebViewActivity"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/webview_subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingStart="10dp"
+        android:textSize="19sp"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/webview_sender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/webview_subject"
+        android:paddingTop="10dp"
+        android:paddingStart="10dp"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
+
+    <TextView
+        android:id="@+id/webview_datetime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/webview_sender"
+        android:paddingTop="10dp"
+        android:paddingStart="10dp"
+        android:textSize="15sp"
+        android:textColor="@color/black" />
 
     <WebView
         android:id="@+id/main_webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/webview_datetime"/>
 
 </RelativeLayout>

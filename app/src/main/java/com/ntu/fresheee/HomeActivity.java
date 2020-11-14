@@ -8,10 +8,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +30,9 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
@@ -42,6 +45,8 @@ public class HomeActivity extends AppCompatActivity {
 
     private CardView safeEntrycardView, tempDeclarationcardView, timeTablecardView;
 
+    private LinearLayout emailupdatesLinearLayout;
+
     private long backPressedTime;
 
     @Override
@@ -50,6 +55,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         getSupportActionBar().hide();
+
+        emailupdatesLinearLayout = (LinearLayout) findViewById(R.id.email_updates_linear_layout);
 
         //Initialize SharedPreferences and get stored username from local files and display it
         SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
@@ -154,11 +161,71 @@ public class HomeActivity extends AppCompatActivity {
 
         imageSlider.setImageList(slideModelList, true);
 
+        DatabaseReference emailupdatesReference = FirebaseDatabase.getInstance().getReference("email_updates");
+
+        LoadingDialog loadingDialog = new LoadingDialog(HomeActivity.this);
+        loadingDialog.startLoadingDialog();
+
+        emailupdatesReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                List<EmailUpdate> emailUpdateArrayList = new ArrayList<>();
+
+                for(DataSnapshot emailupdatesSnapshot: snapshot.getChildren()) {
+                    EmailUpdate emailUpdate = emailupdatesSnapshot.getValue(EmailUpdate.class);
+                    emailUpdateArrayList.add(emailUpdate);
+                }
+
+                if (!emailUpdateArrayList.isEmpty()) {
+                    Collections.sort(emailUpdateArrayList);
+                    
+                    for (EmailUpdate emailUpdate: emailUpdateArrayList) {
+                        View emailupdatesCardView = View.inflate(HomeActivity.this, R.layout.email_update_card, null);
+
+                        ((TextView) emailupdatesCardView.findViewById(R.id.email_updates_subject)).setText((CharSequence) emailUpdate.subject);
+                        ((TextView) emailupdatesCardView.findViewById(R.id.email_updates_sender)).setText((CharSequence) emailUpdate.sender);
+                        Date date = new java.util.Date((emailUpdate.datetime)*1000L);
+                        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT+8"));
+                        String formattedDate = sdf.format(date);
+                        ((TextView) emailupdatesCardView.findViewById(R.id.email_updates_datetime)).setText(formattedDate);
+
+                        emailupdatesCardView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent i = new Intent(HomeActivity.this, WebViewActivity.class);
+                                i.putExtra("html", emailUpdate.body_html);
+                                i.putExtra("subject", emailUpdate.subject);
+                                i.putExtra("sender", emailUpdate.sender);
+                                i.putExtra("datetime", formattedDate);
+                                startActivity(i);
+                            }
+                        });
+
+
+                        emailupdatesLinearLayout.addView(emailupdatesCardView);
+                        loadingDialog.dismissDialog();
+                    }
+                }
+                else {
+                    loadingDialog.dismissDialog();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
 
         //Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        //Set Discovery Selected
+        //Set Home Selected
         bottomNavigationView.setSelectedItemId(R.id.home);
 
         //Perform ItemSelectedListener
