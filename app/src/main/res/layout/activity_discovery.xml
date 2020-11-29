@@ -198,11 +198,6 @@
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_margin="10dp"
-                android:layout_weight="1" />
         </LinearLayout>
     </ScrollView>
 
