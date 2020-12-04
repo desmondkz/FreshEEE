@@ -2,19 +2,14 @@ package com.ntu.fresheee;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,33 +17,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alamkanak.weekview.DateTimeInterpreter;
-import com.alamkanak.weekview.MonthLoader;
-import com.alamkanak.weekview.WeekView;
-import com.alamkanak.weekview.WeekViewEvent;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 
 import org.apache.commons.text.WordUtils;
 import com.github.tlaabs.timetableview.TimetableView;
 import com.github.tlaabs.timetableview.Time;
-import com.github.tlaabs.timetableview.BuildConfig;
-import com.github.tlaabs.timetableview.HighlightMode;
-import com.github.tlaabs.timetableview.SaveManager;
 import com.github.tlaabs.timetableview.Schedule;
-import com.github.tlaabs.timetableview.Sticker;
-import com.github.tlaabs.timetableview.*;
 
 public class TimeTableMainActivity extends AppCompatActivity {
 
