@@ -121,13 +121,6 @@ public class TimeTableMainActivity extends AppCompatActivity {
             courseLinearLayout.addView(currentCourseCardView);
             timetableView.add(schedules);
         }
-
-        timetableView.setOnStickerSelectEventListener(new TimetableView.OnStickerSelectedListener() {
-            @Override
-            public void OnStickerSelected(int idx, ArrayList<Schedule> schedules) {
-                Toast.makeText(TimeTableMainActivity.this, "test", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 
