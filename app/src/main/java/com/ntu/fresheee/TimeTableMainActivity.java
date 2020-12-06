@@ -58,9 +58,10 @@ public class TimeTableMainActivity extends AppCompatActivity {
 
 
         int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        if (day == 1 && day == 2 && day == 3 && day == 4 && day == 5) {
+        if (day == 2 || day == 3 || day == 4 || day == 5 || day == 6) {
             timetableView.setHeaderHighlight(day - 1);
         }
+
 
 
         for (Course course:timetableParser.courses) {
@@ -138,33 +139,32 @@ public class TimeTableMainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.delete_item:
-                MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
-                builder.setTitle("Confirm Delete?");
-                builder.setMessage("You will need to generate your timetable again.");
+        if (item.getItemId() == R.id.delete_item) {
+            MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+            builder.setTitle("Confirm Delete?");
+            builder.setMessage("You will need to generate your timetable again to update your timetable.");
 
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        FirebaseUser fbuser = FirebaseAuth.getInstance().getCurrentUser();
-                        reference = FirebaseDatabase.getInstance().getReference("Users");
-                        userID = fbuser.getUid();
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    FirebaseUser fbuser = FirebaseAuth.getInstance().getCurrentUser();
+                    reference = FirebaseDatabase.getInstance().getReference("Users");
+                    userID = fbuser.getUid();
 
-                        //Delete user's timetable
-                        reference.child(userID).child("timetable").setValue(null);
+                    //Delete user's timetable
+                    reference.child(userID).child("timetable").setValue(null);
 
-                        startActivity(new Intent(TimeTableMainActivity.this, TimeTableIntroActivity.class));
-                        finish();
-                    }
-                });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                builder.show();
+                    startActivity(new Intent(TimeTableMainActivity.this, TimeTableIntroActivity.class));
+                    finish();
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+            builder.show();
         }
         return super.onOptionsItemSelected(item);
     }
