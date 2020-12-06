@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,12 @@ public class SettingsActivity extends AppCompatActivity {
 
         getSupportActionBar().hide();
 
+        SharedPreferences preferences = getSharedPreferences("com.ntu.fresheee.users", MODE_PRIVATE);
+        final TextView fullNameTextView = (TextView) findViewById(R.id.fullName);
+        final TextView emailTextView = (TextView) findViewById(R.id.emailAddress);
+        fullNameTextView.setText(preferences.getString("userName", null));
+        emailTextView.setText(preferences.getString("email", null));
+
         btnLogout = (Button) findViewById(R.id.logout);
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -75,37 +82,36 @@ public class SettingsActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(getApplicationContext());
 
-        LoadingDialog loadingDialog = new LoadingDialog(SettingsActivity.this);
-        loadingDialog.startLoadingDialog();
-
-        fbuser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("Users");
-        userID = fbuser.getUid();
-
-        final TextView fullNameTextView = (TextView) findViewById(R.id.fullName);
-        final TextView emailTextView = (TextView) findViewById(R.id.emailAddress);
-
-        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                User userProfile = snapshot.getValue(User.class);
-
-                if(userProfile != null) {
-                    loadingDialog.dismissDialog();
-
-                    String fullName = userProfile.fullName;
-                    String email = userProfile.email;
-
-                    fullNameTextView.setText(fullName);
-                    emailTextView.setText(email);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(SettingsActivity.this,"Something wrong happened!", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        LoadingDialog loadingDialog = new LoadingDialog(SettingsActivity.this);
+//        loadingDialog.startLoadingDialog();
+//
+//        fbuser = FirebaseAuth.getInstance().getCurrentUser();
+//        reference = FirebaseDatabase.getInstance().getReference("Users");
+//        userID = fbuser.getUid();
+//
+//
+//
+//        reference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                User userProfile = snapshot.getValue(User.class);
+//
+//                if(userProfile != null) {
+//                    loadingDialog.dismissDialog();
+//
+//                    String fullName = userProfile.fullName;
+//                    String email = userProfile.email;
+//
+//                    fullNameTextView.setText(fullName);
+//                    emailTextView.setText(email);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Toast.makeText(SettingsActivity.this,"Something wrong happened!", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 
         //Initialize and assign variable
