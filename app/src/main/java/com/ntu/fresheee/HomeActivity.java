@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,12 +49,16 @@ public class HomeActivity extends AppCompatActivity {
 
     private long backPressedTime;
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         getSupportActionBar().hide();
+
+        progressBar = (ProgressBar) findViewById(R.id.update_progressbar);
 
         emailupdatesLinearLayout = (LinearLayout) findViewById(R.id.email_updates_linear_layout);
 
@@ -157,13 +162,16 @@ public class HomeActivity extends AppCompatActivity {
         slideModelList.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/fresheee-2020.appspot.com/o/homepage_slider_image%2Ftemperature.png?alt=media&token=34943cdd-e3aa-426f-a846-ff4c2a9f46ed"));
         slideModelList.add(new SlideModel("https://firebasestorage.googleapis.com/v0/b/fresheee-2020.appspot.com/o/homepage_slider_image%2Fmax_five.png?alt=media&token=a52833b8-06dd-4526-9a22-20042bfc129a"));
 
-
         imageSlider.setImageList(slideModelList, true);
+
+
+
 
         DatabaseReference emailupdatesReference = FirebaseDatabase.getInstance().getReference("email_updates");
 
-        LoadingDialog loadingDialog = new LoadingDialog(HomeActivity.this);
-        loadingDialog.startLoadingDialog();
+//        LoadingDialog loadingDialog = new LoadingDialog(HomeActivity.this);
+//        loadingDialog.startLoadingDialog();
+        progressBar.setVisibility(View.VISIBLE);
 
         emailupdatesReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -173,6 +181,8 @@ public class HomeActivity extends AppCompatActivity {
                 for(DataSnapshot emailupdatesSnapshot: snapshot.getChildren()) {
                     EmailUpdate emailUpdate = emailupdatesSnapshot.getValue(EmailUpdate.class);
                     emailUpdateArrayList.add(emailUpdate);
+
+
                 }
 
                 if (!emailUpdateArrayList.isEmpty()) {
@@ -201,13 +211,14 @@ public class HomeActivity extends AppCompatActivity {
                             }
                         });
 
-
                         emailupdatesLinearLayout.addView(emailupdatesCardView);
-                        loadingDialog.dismissDialog();
+//                        loadingDialog.dismissDialog();
+                        progressBar.setVisibility(View.GONE);
                     }
                 }
                 else {
-                    loadingDialog.dismissDialog();
+//                    loadingDialog.dismissDialog();
+                    progressBar.setVisibility(View.GONE);
                 }
             }
 

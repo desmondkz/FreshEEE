@@ -139,7 +139,7 @@
                     android:layout_below="@id/icon_timetable"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="7dp"
-                    android:text="Timetable"
+                    android:text="Academic Timetable"
                     android:textSize="13sp"
                     android:textColor="@color/black"
                     android:textAlignment="center"/>
@@ -212,10 +212,17 @@
                 android:paddingBottom="60dp"
                 android:orientation="vertical">
 
+                <ProgressBar
+                    android:id="@+id/update_progressbar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center" />
 
             </LinearLayout>
 
         </ScrollView>
+
+
 
     </LinearLayout>
 
