@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -41,7 +42,8 @@ public class ScannerActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         String url = result.getText().toString().trim();
-                        Intent i = new Intent(ScannerActivity.this, WebViewActivity.class);
+                        Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                        Intent i = new Intent(ScannerActivity.this, WebViewActivity.class);
                         i.putExtra("url", url);
                         startActivity(i);
                     }
